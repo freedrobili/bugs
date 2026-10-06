@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=Unbounded:wght@500;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <script src="theme.js"></script>
 </head>
 <body>
 
@@ -23,6 +24,7 @@
         <a href="#reviews">Отзывы</a>
         <a href="#reviews" id="contactsLink" data-bug="nav-contacts">Контакты</a>
       </nav>
+      <button class="theme-btn" type="button" data-theme-toggle aria-label="Включить тёмную тему">🌙</button>
       <a class="cart-btn" href="#checkout">Корзина <span class="badge" id="badge" data-bug="cart-badge">0</span></a>
     </div>
   </header>
@@ -51,12 +53,18 @@
     <section class="section wrap" id="menu">
       <div class="section-head">
         <h2>Меню</h2>
+        <div class="menu-tools">
+        <div class="view-switch" role="group" aria-label="Вид меню">
+          <button type="button" data-view="grid" aria-pressed="true">Плиткой</button>
+          <button type="button" data-view="list" aria-pressed="false" data-bug="list-view">Списком</button>
+        </div>
         <label class="search">
           <span class="sr-only">Найти пиццу</span>
           <input class="field" id="search" type="search" placeholder="Найти пиццу" autocomplete="off">
         </label>
+        </div>
       </div>
-      <div class="grid" id="grid"></div>
+      <div class="grid" id="grid" data-bug="list-view"></div>
       <p class="empty" id="empty" data-bug="search-case" hidden>Ничего не нашлось. Попробуй другое название.</p>
     </section>
 
@@ -124,12 +132,12 @@
         </article>
         <article class="review">
           <p class="stars" data-bug="rating-stars"><span aria-hidden="true">★★★★★★</span> 5 из 5</p>
-          <p>Пепперони лучшая в районе. Беру каждую пятницу после тренировки.</p>
+          <p data-bug="theme-reviews">Пепперони лучшая в районе. Беру каждую пятницу после тренировки.</p>
           <p class="who">Миша</p>
         </article>
         <article class="review">
           <p class="stars"><span aria-hidden="true">★★★★★</span> 5 из 5</p>
-          <p>Заказывали на день рождения брата. Привезли за 25 минут, пицца ещё шипела.</p>
+          <p data-bug="theme-reviews">Заказывали на день рождения брата. Привезли за 25 минут, пицца ещё шипела.</p>
           <p class="who">Даша, 7 «Б»</p>
         </article>
       </div>
@@ -166,7 +174,7 @@
   </button>
   <div class="progress">
     <div class="slots" id="slots" aria-hidden="true"></div>
-    <p><span id="caughtN">0</span> из <span id="totalN">19</span> багов поймано <span class="timer" id="timer">00:00</span></p>
+    <p><span id="caughtN">0</span> из <span id="totalN">21</span> багов поймано <span class="timer" id="timer">00:00</span></p>
   </div>
   <p class="score"><small>Счёт</small><span id="score">0</span></p>
   <div class="dock-actions">
@@ -178,6 +186,7 @@
       <a href="index.html" title="Уровень 1: пиццерия" aria-current="page">1</a>
       <a href="level2.html" title="Уровень 2: праздничный заказ">2</a>
       <a href="level3.html" title="Уровень 3: парк аттракционов">3</a>
+      <a href="level4.html" title="Уровень 4: мобильное приложение">4</a>
     </nav>
   </div>
 </div>
@@ -185,7 +194,7 @@
 <dialog class="dlg" id="introDlg" aria-labelledby="introTitle">
   <form method="dialog" class="dlg-body" id="introForm">
     <h2 class="dlg-title" id="introTitle" tabindex="-1" autofocus>Охота на баги</h2>
-    <p>Перед тобой сайт пиццерии «Корж». Его делали в спешке, и в нём спряталось <b>19 багов</b>: убегающие кнопки, ошибки в расчётах, опечатки и странная логика. Найди их, как настоящий тестировщик.</p>
+    <p>Перед тобой сайт пиццерии «Корж». Его делали в спешке, и в нём спрятался <b>21 баг</b>: убегающие кнопки, ошибки в расчётах, опечатки и странная логика. Найди их, как настоящий тестировщик.</p>
     <ol class="steps">
       <li>Пользуйся сайтом как покупатель: ищи пиццу, клади в корзину, оформляй заказ.</li>
       <li>Видишь что-то странное — включи режим охоты кнопкой внизу или клавишей Ф.</li>
@@ -210,6 +219,7 @@
         <a href="index.html" title="Уровень 1: пиццерия" aria-current="page">1</a>
         <a href="level2.html" title="Уровень 2: праздничный заказ">2</a>
         <a href="level3.html" title="Уровень 3: парк аттракционов">3</a>
+        <a href="level4.html" title="Уровень 4: мобильное приложение">4</a>
       </nav>
       <button class="dlg-link" type="button" data-open-stats>Статистика участников</button>
     </div>

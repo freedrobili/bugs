@@ -103,6 +103,18 @@
       steps: 'Дождаться рекламы сладкой ваты и навести курсор на крестик.',
       expected: 'Реклама закрывается крестиком.',
       actual: 'Крестик перепрыгивает в другой угол, закрыть рекламу невозможно.' },
+    { id: 'theme-header', sev: 2, type: 'Тема', area: 'Шапка сайта',
+      title: 'В тёмной теме пропадает логотип',
+      hint: 'Включи тёмную тему кнопкой с луной и посмотри на шапку сайта.',
+      steps: 'Включить тёмную тему кнопкой 🌙 в шапке.',
+      expected: 'Шапка становится тёмной, логотип и меню видны.',
+      actual: 'Шапка осталась белой, белый логотип на ней исчез, меню еле видно.' },
+    { id: 'fullscreen-gallery', sev: 2, type: 'Вёрстка', area: 'Фото из парка',
+      title: '«Во весь экран» ломает галерею',
+      hint: 'Открой фотографию во весь экран.',
+      steps: 'В галерее нажать «Во весь экран».',
+      expected: 'Фото аккуратно открывается на весь экран, его можно закрыть.',
+      actual: 'Фото раздувается за края страницы и наезжает на кнопки галереи.' },
   ];
 
   const PENALTY = 5;
@@ -272,6 +284,19 @@
     startMapLoading();
     showAdLater();
   }
+
+  // --- Галерея во весь экран
+  $('#gFull').addEventListener('click', e => {
+    const on = !$('.gallery').classList.contains('is-full');
+    $('.gallery').classList.toggle('is-full', on); // баг: фото раздувается за края страницы
+    if (on) arm('fullscreen-gallery');
+    e.currentTarget.setAttribute('aria-pressed', String(on));
+    e.currentTarget.textContent = on ? 'Свернуть' : 'Во весь экран';
+  });
+
+  // --- Тема: баг виден, когда включена тёмная тема (theme.js)
+  document.addEventListener('themechange', e => { if (e.detail === 'dark') arm('theme-header'); });
+  if (document.documentElement.dataset.theme === 'dark') arm('theme-header');
 
   $('#year').textContent = new Date().getFullYear();
   renderSlide();

@@ -10,6 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=Unbounded:wght@500;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="level2.css">
+  <script src="theme.js"></script>
 </head>
 <body>
 
@@ -24,6 +25,7 @@
         <a href="#delivery">Доставка</a>
         <a href="#order">Заказ</a>
       </nav>
+      <button class="theme-btn" type="button" data-theme-toggle aria-label="Включить тёмную тему">🌙</button>
       <a class="cart-btn" href="#order">Заказ <span class="badge" id="badge">0</span></a>
     </div>
   </header>
@@ -33,13 +35,14 @@
       <div>
         <h1>Пицца на праздник для всего класса</h1>
         <p class="lead">Посчитаем, сколько нужно пиццы, соберём свою и разделим счёт поровну.</p>
+        <button class="btn btn-ghost text-btn" type="button" id="bigText" aria-pressed="false" data-bug="big-text">Аа Крупный шрифт</button>
       </div>
       <div class="size-row" id="sizeRow" aria-hidden="true"></div>
     </section>
 
     <div class="wrap l2-layout">
       <aside class="rules-col" aria-labelledby="rulesTitle">
-        <div class="receipt rules">
+        <div class="receipt rules" data-bug="theme-rules">
           <h2 id="rulesTitle">Как мы считаем</h2>
           <section>
             <h3>Куски</h3>
@@ -77,7 +80,7 @@
       <div class="l2-main">
         <!-- Калькулятор -->
         <section class="l2-section" id="calc">
-          <h2>Сколько нужно пиццы</h2>
+          <h2 data-bug="big-text">Сколько нужно пиццы</h2>
           <div class="panel calc">
             <div class="form-col">
               <label>Гостей
@@ -110,7 +113,7 @@
 
         <!-- Конструктор -->
         <section class="l2-section" id="builder">
-          <h2>Собери свою пиццу</h2>
+          <h2 data-bug="big-text">Собери свою пиццу</h2>
           <div class="panel builder">
             <div class="builder-art"><div class="pizza" id="bPreview"></div></div>
             <div class="form-col">
@@ -135,7 +138,7 @@
 
         <!-- Доставка -->
         <section class="l2-section" id="delivery">
-          <h2>Доставка</h2>
+          <h2 data-bug="big-text">Доставка</h2>
           <div class="panel delivery">
             <div class="form-col">
               <label>Расстояние до вас, км
@@ -159,7 +162,7 @@
 
         <!-- Заказ -->
         <section class="l2-section" id="order">
-          <h2>Заказ</h2>
+          <h2 data-bug="big-text">Заказ</h2>
           <div class="order-grid">
             <div class="panel">
               <h3 class="panel-title">Состав</h3>
@@ -230,7 +233,7 @@
   </button>
   <div class="progress">
     <div class="slots" id="slots" aria-hidden="true"></div>
-    <p><span id="caughtN">0</span> из <span id="totalN">16</span> багов поймано <span class="timer" id="timer">00:00</span></p>
+    <p><span id="caughtN">0</span> из <span id="totalN">18</span> багов поймано <span class="timer" id="timer">00:00</span></p>
   </div>
   <p class="score"><small>Счёт</small><span id="score">0</span></p>
   <div class="dock-actions">
@@ -242,6 +245,7 @@
       <a href="index.html" title="Уровень 1: пиццерия">1</a>
       <a href="level2.html" title="Уровень 2: праздничный заказ" aria-current="page">2</a>
       <a href="level3.html" title="Уровень 3: парк аттракционов">3</a>
+      <a href="level4.html" title="Уровень 4: мобильное приложение">4</a>
     </nav>
   </div>
 </div>
@@ -250,7 +254,7 @@
   <form method="dialog" class="dlg-body" id="introForm">
     <p class="dlg-kicker">Охота на баги, уровень 2</p>
     <h2 class="dlg-title" id="introTitle" tabindex="-1" autofocus>Праздничный заказ</h2>
-    <p>«Корж» запустил заказ пиццы на праздники: калькулятор гостей, конструктор, скидки и бонусы. Опечаток и убегающих кнопок здесь нет — <b>16 багов</b> спрятались в расчётах.</p>
+    <p>«Корж» запустил заказ пиццы на праздники: калькулятор гостей, конструктор, скидки и бонусы. Здесь <b>18 багов</b>, и почти все спрятались в расчётах.</p>
     <ol class="steps">
       <li>Прочитай блок «Как мы считаем». Это правила сайта: по ним проверяем каждую цифру.</li>
       <li>Меняй числа и пересчитывай сам, на бумаге или калькуляторе. Не сходится с правилами — это баг.</li>
@@ -275,6 +279,7 @@
         <a href="index.html" title="Уровень 1: пиццерия">1</a>
         <a href="level2.html" title="Уровень 2: праздничный заказ" aria-current="page">2</a>
         <a href="level3.html" title="Уровень 3: парк аттракционов">3</a>
+        <a href="level4.html" title="Уровень 4: мобильное приложение">4</a>
       </nav>
       <button class="dlg-link" type="button" data-open-stats>Статистика участников</button>
     </div>

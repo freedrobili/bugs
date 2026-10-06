@@ -21,7 +21,7 @@
 
 /* карта парка и загрузка */
 .map-card { align-self: stretch; display: flex; flex-direction: column; gap: 8px; }
-.loader { height: 14px; background: #fff; border-radius: 999px; margin-top: 6px; }
+.loader { height: 14px; background: var(--paper); border-radius: 999px; margin-top: 6px; }
 .loader-bar {
   height: 100%; width: 0; border-radius: 999px;
   background: linear-gradient(90deg, var(--basil), #5bb27e);
@@ -36,14 +36,14 @@
 .rides { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; align-items: start; }
 .ride { background: var(--surface); border-radius: 24px; padding: 22px; display: flex; flex-direction: column; gap: 10px; }
 .ride-art {
-  width: 96px; height: 96px; border-radius: 50%; background: #fff;
+  width: 96px; height: 96px; border-radius: 50%; background: var(--paper);
   display: grid; place-items: center; font-size: 52px; margin-bottom: 6px;
 }
 .ride h3 { font: 700 19px/1.2 var(--display); letter-spacing: -.02em; }
 .desc { color: var(--muted); font-size: 15px; }
 .queue p { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 6px; }
 .queue b { font-weight: 600; }
-.queue-track { height: 10px; background: #fff; border-radius: 999px; overflow: hidden; }
+.queue-track { height: 10px; background: var(--paper); border-radius: 999px; overflow: hidden; }
 .queue-bar { height: 100%; background: var(--cheese); border-radius: 999px; }
 .age-check, .book { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; align-items: end; margin-top: 4px; }
 .age-check label { font-size: 15px; font-weight: 500; }
@@ -55,6 +55,9 @@
 .seats { font-size: 16px; }
 .seats b { font: 700 22px var(--display); }
 
+/* баг: шапка не перекрашивается в тёмной теме — логотип и меню пропадают */
+.header { background: rgba(255, 255, 255, .95); }
+
 /* ---------- Галерея ---------- */
 .gallery { background: var(--surface); border-radius: 24px; padding: 20px; }
 .slide {
@@ -65,17 +68,25 @@
 .slide-caption { font: 700 22px/1.2 var(--display); letter-spacing: -.02em; margin-top: 16px; }
 .gallery-bar { display: flex; align-items: center; gap: 10px; margin-top: 14px; }
 .g-btn {
-  width: 46px; height: 46px; border-radius: 50%; border: 1.5px solid var(--ink); background: #fff;
+  width: 46px; height: 46px; border-radius: 50%; border: 1.5px solid var(--ink); background: var(--paper);
   font-size: 20px; cursor: pointer;
 }
-.g-btn:hover { background: var(--ink); color: #fff; }
+.g-btn:hover { background: var(--ink); color: var(--on-ink); }
+.g-full {
+  border: 0; background: none; padding: 10px 6px; cursor: pointer; color: var(--ink);
+  font-size: 15px; font-weight: 600; text-decoration: underline; text-underline-offset: 3px;
+}
+/* баг: «Во весь экран» раздувает фото за края страницы, оно наезжает на кнопки галереи */
+.gallery.is-full .slide { width: 170%; margin: 0 0 -110px -35%; min-height: 600px; position: relative; z-index: 2; }
+.gallery.is-full .slide-art { font-size: 220px; }
+.gallery.is-full .gallery-bar { position: relative; z-index: 3; }
 .g-count { font-weight: 600; min-width: 48px; text-align: center; font-variant-numeric: tabular-nums; }
 .like {
   margin-left: auto; display: inline-flex; align-items: center; gap: 8px;
-  border: 0; border-radius: 999px; background: #fff; padding: 11px 18px; cursor: pointer;
+  border: 0; border-radius: 999px; background: var(--paper); padding: 11px 18px; cursor: pointer;
   font-size: 16px; font-weight: 600; font-variant-numeric: tabular-nums;
 }
-.like span:first-child { color: #c9cfca; font-size: 18px; }
+.like span:first-child { color: var(--line); font-size: 18px; }
 .like[aria-pressed="true"] span:first-child { color: var(--tomato); }
 
 /* ---------- Билеты ---------- */
@@ -84,13 +95,13 @@
 .ticket-name { font: 700 19px var(--display); letter-spacing: -.02em; }
 .ticket-price { font: 800 44px/1 var(--display); letter-spacing: -.04em; }
 .ticket-offer .btn { margin-top: 10px; }
-.ticket { display: flex; gap: 18px; align-items: center; background: #fff; border-radius: 18px; padding: 14px; }
+.ticket { display: flex; gap: 18px; align-items: center; background: var(--paper); border-radius: 18px; padding: 14px; }
 
 .confirm {
   position: fixed; inset: 0; z-index: 36; display: grid; place-items: center; padding: 16px;
   background: rgba(27, 33, 29, .45);
 }
-.confirm-box { background: #fff; border-radius: 22px; padding: 26px; width: min(400px, 100%); box-shadow: 0 20px 50px rgba(27, 33, 29, .25); }
+.confirm-box { background: var(--bg); border-radius: 22px; padding: 26px; width: min(400px, 100%); box-shadow: 0 20px 50px rgba(27, 33, 29, .25); }
 .confirm-title { font: 700 20px/1.3 var(--display); letter-spacing: -.02em; }
 .confirm-actions { display: flex; justify-content: end; gap: 10px; margin-top: 22px; }
 
@@ -105,7 +116,7 @@
 .ad {
   position: fixed; left: 16px; bottom: calc(var(--dock-h) + 26px); z-index: 34;
   width: min(330px, 100% - 32px); display: flex; gap: 14px; align-items: center;
-  background: var(--cheese); color: var(--ink); border-radius: 20px; padding: 18px 44px 18px 18px;
+  background: var(--cheese); color: #1b211d; border-radius: 20px; padding: 18px 44px 18px 18px;
   box-shadow: 0 14px 36px rgba(27, 33, 29, .25);
   animation: drop .35s cubic-bezier(.3, 1.3, .5, 1);
 }

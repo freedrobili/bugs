@@ -12,6 +12,12 @@
   --cheese: #f4c64a;
   --sauce: #d8432a;
   --crust: #d99b57;
+  --paper: #ffffff;            /* белые плашки, поля, кнопки */
+  --on-ink: #ffffff;           /* текст на заливке цветом --ink */
+  --header-bg: rgba(255, 255, 255, .92);
+  --deep: #1b211d;             /* тёмные полосы: акции, подвал */
+  --success-bg: #e1f0e6;
+  --success-ink: #1f5a38;
 
   /* игровой слой: ультрафиолетовый фонарик */
   --night: #16112b;
@@ -26,6 +32,22 @@
   --display: 'Unbounded', system-ui, sans-serif;
   --text: 'Onest', system-ui, sans-serif;
   --dock-h: 84px;
+}
+
+/* Тёмная тема сайтов. Игровой слой (панель, окна) от темы не зависит */
+:root[data-theme="dark"] {
+  --bg: #121513;
+  --surface: #1d221f;
+  --line: #333b35;
+  --ink: #e8ece7;
+  --muted: #9da69f;
+  --paper: #262c28;
+  --on-ink: #121513;
+  --header-bg: rgba(18, 21, 19, .9);
+  --deep: #0b0d0c;
+  --success-bg: #1f3a2a;
+  --success-ink: #a8e0bd;
+  color-scheme: dark;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -58,14 +80,14 @@ a { color: inherit; }
 }
 .btn-tomato { background: var(--tomato); color: #fff; }
 .btn-tomato:hover { background: var(--tomato-hover); }
-.btn-dark { background: var(--ink); color: #fff; padding: 12px 20px; }
+.btn-dark { background: var(--ink); color: var(--on-ink); padding: 12px 20px; }
 .btn-ghost { background: transparent; box-shadow: inset 0 0 0 1.5px var(--ink); }
 .btn-ghost:hover { background: var(--surface); }
 .btn-wide { width: 100%; }
 
 .field {
   display: block; width: 100%;
-  background: #fff; border: 1px solid var(--line); border-radius: 12px;
+  background: var(--paper); border: 1px solid var(--line); border-radius: 12px;
   padding: 12px 14px; font-size: 16px; font-weight: 400;
   transition: border-color .15s, box-shadow .15s;
 }
@@ -76,7 +98,7 @@ select.field { appearance: none; background-image: linear-gradient(45deg, transp
 /* ---------- Шапка ---------- */
 .header {
   position: sticky; top: 0; z-index: 30;
-  background: rgba(255, 255, 255, .92); backdrop-filter: blur(10px);
+  background: var(--header-bg); backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--line);
 }
 .header-inner { display: flex; align-items: center; gap: 32px; height: 68px; }
@@ -90,9 +112,14 @@ select.field { appearance: none; background-image: linear-gradient(45deg, transp
 .nav a:hover { color: var(--ink); }
 .cart-btn {
   display: inline-flex; align-items: center; gap: 10px;
-  background: var(--ink); color: #fff; text-decoration: none;
+  background: var(--ink); color: var(--on-ink); text-decoration: none;
   border-radius: 999px; padding: 9px 10px 9px 18px; font-weight: 600; font-size: 15px;
 }
+.theme-btn {
+  width: 40px; height: 40px; flex: none; border-radius: 50%; border: 1px solid var(--line);
+  background: transparent; font-size: 18px; line-height: 1; cursor: pointer;
+}
+.theme-btn:hover { background: var(--surface); }
 .badge {
   min-width: 26px; height: 26px; padding: 0 7px; border-radius: 13px;
   background: var(--cheese); color: var(--ink);
@@ -141,7 +168,7 @@ select.field { appearance: none; background-image: linear-gradient(45deg, transp
 }
 
 /* ---------- Полоса с акциями ---------- */
-.strip { background: var(--ink); color: #fff; }
+.strip { background: var(--deep); color: #fff; }
 .strip-inner { display: flex; justify-content: space-between; gap: 24px; padding: 16px 0; font-size: 15px; flex-wrap: wrap; }
 .strip b { color: var(--cheese); font-weight: 600; }
 .strip .faint { color: #353e38; }
@@ -158,15 +185,26 @@ select.field { appearance: none; background-image: linear-gradient(45deg, transp
 .card .pizza { width: 70%; margin: 6px auto 14px; }
 .card h3 { font: 700 19px/1.2 var(--display); letter-spacing: -.02em; }
 .desc { color: var(--muted); font-size: 15px; flex: 1; }
-.sizes { display: flex; gap: 2px; background: #fff; border-radius: 999px; padding: 4px; margin-top: 6px; }
+.sizes { display: flex; gap: 2px; background: var(--paper); border-radius: 999px; padding: 4px; margin-top: 6px; }
 .sizes button {
   flex: 1; border: 0; border-radius: 999px; padding: 7px 0; background: transparent;
   font-size: 14px; font-weight: 500; color: var(--muted); cursor: pointer;
 }
-.sizes button[aria-pressed="true"] { background: var(--ink); color: #fff; }
+.sizes button[aria-pressed="true"] { background: var(--ink); color: var(--on-ink); }
 .card-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; gap: 12px; }
 .price { font: 700 20px var(--display); letter-spacing: -.02em; }
 .card .btn { padding: 11px 18px; font-size: 15px; }
+.menu-tools { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.view-switch { display: flex; gap: 2px; background: var(--surface); border-radius: 999px; padding: 4px; }
+.view-switch button {
+  border: 0; background: transparent; border-radius: 999px; padding: 8px 14px;
+  font-size: 14px; font-weight: 500; color: var(--muted); cursor: pointer;
+}
+.view-switch button[aria-pressed="true"] { background: var(--ink); color: var(--on-ink); }
+/* баг: в режиме «Списком» карточки шире экрана, картинка налезает на текст */
+.grid.is-list { grid-template-columns: minmax(0, 1fr); }
+.grid.is-list .card { display: grid; grid-template-columns: 240px repeat(2, minmax(0, 1fr)); align-items: center; width: 140%; }
+.grid.is-list .card .pizza { width: 300px; margin: -40px 0 -40px -50px; }
 .empty { padding: 40px; text-align: center; background: var(--surface); border-radius: 24px; color: var(--muted); }
 
 /* ---------- Корзина и форма ---------- */
@@ -180,7 +218,7 @@ select.field { appearance: none; background-image: linear-gradient(45deg, transp
 }
 .row b { font-weight: 600; }
 .row small { display: block; color: var(--muted); font-size: 14px; }
-.stepper { display: flex; align-items: center; background: #fff; border-radius: 999px; padding: 3px; }
+.stepper { display: flex; align-items: center; background: var(--paper); border-radius: 999px; padding: 3px; }
 .stepper button { width: 30px; height: 30px; border: 0; border-radius: 50%; background: transparent; font-size: 18px; cursor: pointer; }
 .stepper button:hover { background: var(--surface); }
 .stepper span { min-width: 30px; text-align: center; font-weight: 600; }
@@ -203,7 +241,7 @@ select.field { appearance: none; background-image: linear-gradient(45deg, transp
 .order .field { margin-top: 6px; }
 .order textarea { resize: vertical; }
 .form-error { color: var(--tomato); font-size: 15px; min-height: 22px; margin-bottom: 8px; }
-.success { margin-top: 14px; background: #e1f0e6; color: #1f5a38; border-radius: 14px; padding: 14px 16px; }
+.success { margin-top: 14px; background: var(--success-bg); color: var(--success-ink); border-radius: 14px; padding: 14px 16px; }
 
 /* ---------- Отзывы ---------- */
 .review-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
@@ -211,11 +249,12 @@ select.field { appearance: none; background-image: linear-gradient(45deg, transp
 .stars { color: var(--muted); font-size: 14px; font-weight: 500; }
 .stars > span { color: #e7a71c; font-size: 18px; letter-spacing: 2px; margin-right: 6px; }
 .stars .star-off { color: var(--line); }
+.review > p:not([class]) { color: #1b211d; } /* баг: цвет не из темы */
 .long { white-space: nowrap; }
 .who { color: var(--muted); font-size: 15px; margin-top: auto; }
 
 /* ---------- Подвал ---------- */
-.footer { background: var(--ink); color: #c9cfca; margin-top: 96px; padding: 56px 0 28px; scroll-margin-top: 68px; }
+.footer { background: var(--deep); color: #c9cfca; margin-top: 96px; padding: 56px 0 28px; scroll-margin-top: 68px; }
 .footer-inner { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 28px; }
 .logo-light { color: #fff; margin-bottom: 10px; }
 .footer h4 { color: #fff; font-size: 15px; font-weight: 600; margin-bottom: 6px; }
@@ -223,7 +262,7 @@ select.field { appearance: none; background-image: linear-gradient(45deg, transp
 
 .site-toast {
   position: fixed; top: 80px; right: 16px; z-index: 35;
-  background: var(--ink); color: #fff; padding: 12px 16px; border-radius: 14px;
+  background: var(--ink); color: var(--on-ink); padding: 12px 16px; border-radius: 14px;
   font-size: 15px; box-shadow: 0 10px 30px rgba(27, 33, 29, .25);
   animation: drop .25s ease-out;
 }
@@ -437,6 +476,12 @@ a.dock-btn { display: inline-flex; align-items: center; justify-content: center;
 .board ol { list-style: none; margin: 0; padding: 4px 16px 14px 62px; display: grid; gap: 4px; font-size: 14px; color: #d9d4ee; }
 .board ol .t { color: var(--uv-light); font-variant-numeric: tabular-nums; margin-right: 8px; }
 .board-empty { color: #b5aed3; padding: 12px 0; }
+
+/* на узких телефонах меню уровней — отдельной строкой панели */
+@media (max-width: 440px) {
+  .dock-actions { flex-wrap: wrap; }
+  .dock .levels { flex: 1 1 100%; justify-content: center; }
+}
 
 /* ---------- Анимации ---------- */
 @keyframes rise { 0% { opacity: 0; transform: translate(-50%, -30%) scale(.8); } 15% { opacity: 1; transform: translate(-50%, -60%) scale(1.05); } 100% { opacity: 0; transform: translate(-50%, -190%); } }

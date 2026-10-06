@@ -127,6 +127,18 @@
       steps: 'Прокрутить страницу до подвала.',
       expected: 'Указан текущий год.',
       actual: 'Написано «© 2062».' },
+    { id: 'theme-reviews', sev: 2, type: 'Тема', repro: true, area: 'Отзывы',
+      title: 'В тёмной теме не видно отзывов',
+      hint: 'Включи тёмную тему кнопкой с луной в шапке и пролистай всю страницу. Всё ли читается?',
+      steps: 'Включить тёмную тему кнопкой 🌙 в шапке и прокрутить страницу до отзывов.',
+      expected: 'Текст отзывов становится светлым и читается на тёмном фоне.',
+      actual: 'Текст отзывов остался тёмным и сливается с фоном.' },
+    { id: 'list-view', sev: 2, type: 'Вёрстка', repro: true, area: 'Меню',
+      title: 'Режим «Списком» ломает меню',
+      hint: 'Переключи меню с плитки на список.',
+      steps: 'В разделе «Меню» нажать «Списком».',
+      expected: 'Пиццы выстраиваются в аккуратный список во всю ширину страницы.',
+      actual: 'Карточки вылезают за правый край, картинки налезают на текст, кнопки «В корзину» обрезаны.' },
   ];
 
   const PENALTY = 5;
@@ -368,6 +380,20 @@
     clearTimeout(toastTimer);
     toastTimer = setTimeout(() => { t.hidden = true; }, 2400);
   }
+
+  // --- Вид меню: плиткой или списком
+  document.querySelector('.view-switch').addEventListener('click', e => {
+    const b = e.target.closest('[data-view]');
+    if (!b) return;
+    const list = b.dataset.view === 'list';
+    grid.classList.toggle('is-list', list); // баг: стили списка не помещаются в экран
+    if (list) arm('list-view');
+    document.querySelectorAll('.view-switch [data-view]').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+  });
+
+  // --- Тема: баг виден, когда включена тёмная тема (theme.js)
+  document.addEventListener('themechange', e => { if (e.detail === 'dark') arm('theme-reviews'); });
+  if (document.documentElement.dataset.theme === 'dark') arm('theme-reviews');
 
   renderMenu();
   renderCart();

@@ -13,7 +13,7 @@ window.BugStats = (() => {
 
   const ROWS_KEY = 'korzh-bughunt-stats-v1';
   const PARTICIPANT_KEY = 'korzh-bughunt-participant-v1';
-  const PROGRESS_KEYS = ['korzh-bughunt-v1', 'korzh-bughunt-l2-v1', 'korzh-bughunt-l3-v1'];
+  const PROGRESS_KEYS = ['korzh-bughunt-v1', 'korzh-bughunt-l2-v1', 'korzh-bughunt-l3-v1', 'korzh-bughunt-l4-v1', 'korzh-theme'];
   const COLUMNS = [
     ['at', 'Дата и время'], ['name', 'Участник'], ['level', 'Уровень'], ['event', 'Событие'],
     ['bug', 'Баг'], ['severity', 'Серьёзность'], ['points', 'Баллы'], ['clock', 'Время от старта'],

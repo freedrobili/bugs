@@ -10,12 +10,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=Unbounded:wght@500;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="level3.css">
+  <script src="theme.js"></script>
 </head>
 <body>
 
 <!-- ============ Сайт парка аттракционов «Вираж» (здесь живут баги) ============ -->
 <div id="site">
-  <header class="header">
+  <header class="header" data-bug="theme-header">
     <div class="wrap header-inner">
       <a class="logo" href="#top">вираж</a>
       <nav class="nav" aria-label="Основное меню">
@@ -24,6 +25,7 @@
         <a href="#tickets">Билеты</a>
         <a href="#band">Браслет</a>
       </nav>
+      <button class="theme-btn" type="button" data-theme-toggle aria-label="Включить тёмную тему">🌙</button>
       <a class="cart-btn" href="#tickets">Купить билет</a>
     </div>
   </header>
@@ -123,7 +125,7 @@
     <section class="section wrap" id="photos">
       <div class="section-head"><h2>Фото из парка</h2></div>
       <div class="gallery">
-        <div class="slide" id="slide"></div>
+        <div class="slide" id="slide" data-bug="fullscreen-gallery"></div>
         <div class="gallery-bar">
           <button class="g-btn" type="button" id="gPrev" aria-label="Предыдущее фото">←</button>
           <span class="g-count" id="gCount">1 / 5</span>
@@ -131,6 +133,7 @@
           <button class="like" type="button" id="like" aria-pressed="false" data-bug="like-decrease">
             <span aria-hidden="true">❤</span> <span id="likeN">128</span>
           </button>
+          <button class="g-full" type="button" id="gFull" aria-pressed="false" data-bug="fullscreen-gallery">Во весь экран</button>
         </div>
       </div>
     </section>
@@ -238,7 +241,7 @@
   </button>
   <div class="progress">
     <div class="slots" id="slots" aria-hidden="true"></div>
-    <p><span id="caughtN">0</span> из <span id="totalN">15</span> багов поймано <span class="timer" id="timer">00:00</span></p>
+    <p><span id="caughtN">0</span> из <span id="totalN">17</span> багов поймано <span class="timer" id="timer">00:00</span></p>
   </div>
   <p class="score"><small>Счёт</small><span id="score">0</span></p>
   <div class="dock-actions">
@@ -250,6 +253,7 @@
       <a href="index.html" title="Уровень 1: пиццерия">1</a>
       <a href="level2.html" title="Уровень 2: праздничный заказ">2</a>
       <a href="level3.html" title="Уровень 3: парк аттракционов" aria-current="page">3</a>
+      <a href="level4.html" title="Уровень 4: мобильное приложение">4</a>
     </nav>
   </div>
 </div>
@@ -258,7 +262,7 @@
   <form method="dialog" class="dlg-body" id="introForm">
     <p class="dlg-kicker">Охота на баги, уровень 3</p>
     <h2 class="dlg-title" id="introTitle" tabindex="-1" autofocus>Парк аттракционов</h2>
-    <p>В парке «Вираж» спрятались <b>15 простых и смешных багов</b>: убегающая кнопка, полоски, которые врут, QR-коды, ведущие не туда, и счётчики, которые идут не в ту сторону.</p>
+    <p>В парке «Вираж» спрятались <b>17 простых и смешных багов</b>: убегающая кнопка, полоски, которые врут, QR-коды, ведущие не туда, и счётчики, которые идут не в ту сторону.</p>
     <ol class="steps">
       <li>Пользуйся сайтом как посетитель парка: проверь возраст, забронируй кабинку, купи билет, пополни браслет.</li>
       <li>QR-коды сканируй камерой телефона. Туда ли они ведут?</li>
@@ -283,6 +287,7 @@
         <a href="index.html" title="Уровень 1: пиццерия">1</a>
         <a href="level2.html" title="Уровень 2: праздничный заказ">2</a>
         <a href="level3.html" title="Уровень 3: парк аттракционов" aria-current="page">3</a>
+        <a href="level4.html" title="Уровень 4: мобильное приложение">4</a>
       </nav>
       <button class="dlg-link" type="button" data-open-stats>Статистика участников</button>
     </div>

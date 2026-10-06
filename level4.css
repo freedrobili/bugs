@@ -1,0 +1,185 @@
+/* Уровень 4. Общие токены, панель охоты и диалоги — в style.css */
+
+.muted { color: var(--muted); }
+
+/* ---------- На компьютере: инструкция ---------- */
+.gate {
+  display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 64px; align-items: center;
+  min-height: calc(100vh - var(--dock-h) - 40px); padding: 48px 0;
+}
+.gate h1 { font: 700 clamp(32px, 4.4vw, 54px)/1.05 var(--display); letter-spacing: -.035em; max-width: 13ch; }
+.gate-phone {
+  width: 230px; height: 460px; border-radius: 40px; background: var(--deep); padding: 12px;
+  box-shadow: 0 30px 60px rgba(27, 33, 29, .25);
+}
+.gate-screen {
+  height: 100%; border-radius: 30px; background: var(--surface);
+  display: grid; place-content: center; justify-items: center; gap: 14px;
+}
+.gate-screen .pizza { width: 150px; }
+.gate-screen p { font: 800 26px var(--display); letter-spacing: -.03em; }
+.gate-steps { margin: 28px 0 0; padding: 0; list-style: none; counter-reset: g; display: grid; gap: 14px; max-width: 60ch; }
+.gate-steps li { counter-increment: g; position: relative; padding: 6px 0 0 50px; min-height: 36px; }
+.gate-steps li::before {
+  content: counter(g); position: absolute; left: 0; top: 0;
+  width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--ink); color: var(--on-ink); font: 700 15px var(--display);
+}
+.gate-steps b { font-weight: 600; }
+
+/* ---------- Приложение: только в режиме телефона ---------- */
+.app { display: none; }
+@media (max-width: 520px), (hover: none) and (pointer: coarse) {
+  .gate { display: none; }
+  .app { display: block; }
+}
+
+.app { font-size: 16px; }
+.app-bar {
+  position: sticky; top: 0; z-index: 20; height: 56px; padding: 0 12px;
+  display: grid; grid-template-columns: 44px minmax(0, 1fr) 44px; align-items: center;
+  background: var(--header-bg); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line);
+}
+.app-title { grid-column: 2; text-align: center; font: 700 18px var(--display); letter-spacing: -.02em; }
+.app-icon {
+  position: relative; width: 40px; height: 40px; border-radius: 50%; border: 0; background: transparent;
+  font-size: 20px; cursor: pointer;
+}
+#back { grid-column: 1; }
+#cartIcon { grid-column: 3; }
+.app-dot { position: absolute; top: 6px; right: 6px; width: 9px; height: 9px; border-radius: 50%; background: var(--tomato); }
+
+.screens { padding-bottom: 96px; }
+.screen { padding: 16px; overflow-x: auto; }
+.hello { font: 700 22px/1.2 var(--display); letter-spacing: -.02em; margin-bottom: 14px; }
+.app-empty { color: var(--muted); padding: 32px 0; text-align: center; }
+
+/* баг: баннер фиксированной ширины шире экрана телефона */
+.promo {
+  width: 560px; display: flex; gap: 14px; align-items: center;
+  background: var(--tomato); color: #fff; border-radius: 20px; padding: 16px 18px;
+}
+.promo-art { font-size: 34px; }
+.promo-title { font: 700 17px/1.2 var(--display); letter-spacing: -.02em; }
+.promo-text { font-size: 14px; opacity: .9; margin-top: 2px; }
+
+.chips { display: flex; gap: 8px; margin: 16px 0 6px; }
+.chips button {
+  border: 1px solid var(--line); background: var(--paper); border-radius: 999px; padding: 8px 14px;
+  font-size: 14px; font-weight: 500; cursor: pointer; white-space: nowrap;
+}
+.chips button[aria-pressed="true"] { background: var(--ink); color: var(--on-ink); border-color: var(--ink); }
+
+.p-list, .c-list { list-style: none; margin: 0; padding: 0; }
+.p-row {
+  display: grid; grid-template-columns: 56px minmax(0, 1fr) auto 40px; gap: 12px; align-items: center;
+  padding: 12px 0; border-bottom: 1px solid var(--line); cursor: pointer;
+}
+.p-row .pizza { width: 56px; }
+.p-name { font-weight: 600; white-space: nowrap; } /* баг: длинное название не переносится и налезает на цену */
+.p-desc { color: var(--muted); font-size: 13px; line-height: 1.35; margin-top: 2px; }
+.p-price { font-weight: 700; white-space: nowrap; }
+.p-add {
+  width: 40px; height: 40px; border-radius: 50%; border: 0; background: var(--ink); color: var(--on-ink);
+  font-size: 22px; line-height: 1; cursor: pointer;
+}
+/* баг: на экранах уже 380 px строка не помещается и кнопка «+» уезжает за край */
+@media (max-width: 379px) {
+  .p-row { min-width: 384px; }
+}
+
+/* карточка пиццы */
+.prod { display: grid; gap: 12px; }
+.prod .pizza { width: min(240px, 70%); margin: 8px auto 6px; }
+.prod h2 { font: 700 24px/1.15 var(--display); letter-spacing: -.02em; }
+.prod-price { font: 800 30px var(--display); letter-spacing: -.03em; }
+
+/* корзина */
+.c-row { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 12px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.c-row b { font-weight: 600; display: block; }
+.c-row small { color: var(--muted); font-size: 13px; }
+.c-row .stepper { background: var(--surface); }
+.c-sum { font-weight: 700; white-space: nowrap; }
+/* баг: блок оформления стоит слишком низко и уходит под нижнее меню */
+.checkout {
+  position: fixed; left: 12px; right: 12px; z-index: 22;
+  bottom: calc(var(--dock-h) + 44px);
+  background: var(--bg); border-radius: 20px; padding: 12px;
+  box-shadow: 0 -6px 24px rgba(27, 33, 29, .12);
+}
+.c-total { display: flex; justify-content: space-between; align-items: baseline; padding: 4px 4px 12px; font-weight: 600; }
+.c-total b { font: 800 24px var(--display); letter-spacing: -.03em; color: #1b211d; } /* баг: цвет не из темы */
+.screen[data-screen="cart"] { padding-bottom: 170px; }
+
+/* заказ */
+.order-num { font: 700 20px var(--display); letter-spacing: -.02em; margin-bottom: 14px; }
+.track { list-style: none; margin: 0 0 14px; padding: 0; display: grid; gap: 10px; }
+.track li { display: flex; gap: 12px; align-items: center; color: var(--muted); }
+.track li::before {
+  content: ''; width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--line); flex: none;
+}
+.track li.done { color: var(--ink); font-weight: 600; }
+.track li.done::before { background: var(--basil); border-color: var(--basil); box-shadow: inset 0 0 0 4px var(--bg); }
+.rate { margin-top: 20px; background: var(--surface); border-radius: 18px; padding: 16px; }
+.rate-title { font-weight: 600; }
+.stars-input { display: flex; gap: 4px; margin: 8px 0; }
+.stars-input button { border: 0; background: none; font-size: 32px; line-height: 1; color: var(--line); cursor: pointer; padding: 2px; }
+.stars-input button.on { color: #e7a71c; }
+
+/* профиль */
+.me { display: flex; gap: 14px; align-items: center; margin-bottom: 18px; }
+.me-ava { width: 56px; height: 56px; border-radius: 50%; background: var(--surface); display: grid; place-items: center; font-size: 26px; }
+.me-name { font: 700 20px var(--display); }
+.settings { list-style: none; margin: 0; padding: 0; background: var(--surface); border-radius: 18px; }
+.settings li { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 16px; }
+.settings li + li { border-top: 1px solid var(--line); }
+.settings small { display: block; color: var(--muted); font-size: 13px; }
+.app-switch {
+  position: relative; width: 50px; height: 30px; flex: none; border-radius: 15px; border: 0;
+  background: var(--line); cursor: pointer; transition: background .2s;
+}
+.app-switch i { position: absolute; top: 3px; left: 3px; width: 24px; height: 24px; border-radius: 50%; background: #fff; transition: transform .2s; }
+.app-switch[aria-pressed="true"] { background: var(--basil); }
+.app-switch[aria-pressed="true"] i { transform: translateX(20px); }
+.version { margin-top: 18px; text-align: center; font-size: 13px; }
+
+/* нижнее меню приложения — над панелью охоты */
+.tabbar {
+  position: fixed; left: 8px; right: 8px; bottom: calc(var(--dock-h) + 14px); z-index: 25;
+  height: 64px; display: grid; grid-template-columns: repeat(4, 1fr);
+  background: var(--bg); border: 1px solid var(--line); border-radius: 20px;
+  box-shadow: 0 6px 24px rgba(27, 33, 29, .12);
+}
+.tabbar button {
+  position: relative; border: 0; background: none; cursor: pointer; color: var(--muted);
+  display: grid; place-content: center; justify-items: center; gap: 2px; font-size: 12px; font-weight: 500;
+}
+.tabbar b { font-size: 20px; line-height: 1; font-weight: 400; }
+.tabbar button[aria-current="page"] { color: var(--ink); font-weight: 700; }
+.tab-badge {
+  position: absolute; top: 6px; left: 54%; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px;
+  background: var(--tomato); color: #fff; font-size: 11px; font-style: normal; font-weight: 700; display: grid; place-items: center;
+}
+/* баг: в горизонтальном положении нижнее меню растягивается на полэкрана */
+@media (orientation: landscape) and (max-height: 520px) {
+  .tabbar { height: 48vh; }
+  .tabbar b { font-size: 44px; }
+}
+
+.app-toast {
+  position: fixed; left: 16px; right: 16px; bottom: calc(var(--dock-h) + 90px); z-index: 26;
+  display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  background: var(--ink); color: var(--on-ink); border-radius: 16px; padding: 12px 14px 12px 16px; font-size: 14px;
+  animation: drop .25s ease-out;
+}
+.app-toast button { border: 0; background: var(--tomato); color: #fff; border-radius: 10px; padding: 8px 12px; font-weight: 600; cursor: pointer; }
+
+/* баг: «Крупный текст» увеличивает шрифт, но вёрстка не перестраивается */
+.app.big { font-size: 22px; }
+.app.big .app-title, .app.big .hello, .app.big .p-name { font-size: 34px; line-height: .8; white-space: nowrap; }
+.app.big .tabbar span { font-size: 19px; white-space: nowrap; }
+.app.big .settings li { white-space: nowrap; }
+
+@media (max-width: 720px) {
+  .gate { grid-template-columns: 1fr; gap: 32px; }
+}

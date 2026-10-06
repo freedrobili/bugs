@@ -12,6 +12,13 @@
   font: 700 clamp(34px, 4.6vw, 58px)/1.05 var(--display);
   letter-spacing: -.035em; max-width: 14ch;
 }
+.text-btn { margin-top: 22px; padding: 10px 18px; font-size: 15px; }
+.text-btn[aria-pressed="true"] { background: var(--ink); color: var(--on-ink); }
+/* баг: «Крупный шрифт» не перестраивает вёрстку — заголовки и числа налезают и вылезают */
+.big-text .l2-main { font-size: 24px; }
+.big-text .l2-section > h2 { font-size: 76px; line-height: .68; white-space: nowrap; }
+.big-text .calc-big { font-size: 128px; white-space: nowrap; }
+.big-text .lines > div { white-space: nowrap; }
 .size-row { display: flex; align-items: end; justify-content: end; gap: 18px; }
 .size-item { display: grid; justify-items: center; gap: 10px; color: var(--muted); font-size: 14px; font-weight: 500; }
 .size-item .pizza::after {
@@ -34,7 +41,7 @@
 
 /* ---------- Чек ---------- */
 .receipt {
-  position: relative; background: #fff; padding: 26px 24px 30px;
+  position: relative; background: var(--paper); padding: 26px 24px 30px;
   border-radius: 18px 18px 0 0;
   filter: drop-shadow(0 1px 0 var(--line)) drop-shadow(0 10px 24px rgba(27, 33, 29, .1));
   margin-bottom: 14px;
@@ -42,9 +49,10 @@
 .receipt::after {
   content: ''; position: absolute; left: 0; right: 0; bottom: -14px; height: 14px;
   background:
-    linear-gradient(-45deg, transparent 10px, #fff 0) 0 0 / 20px 14px repeat-x,
-    linear-gradient(45deg, transparent 10px, #fff 0) 0 0 / 20px 14px repeat-x;
+    linear-gradient(-45deg, transparent 10px, var(--paper-edge, var(--paper)) 0) 0 0 / 20px 14px repeat-x,
+    linear-gradient(45deg, transparent 10px, var(--paper-edge, var(--paper)) 0) 0 0 / 20px 14px repeat-x;
 }
+.rules { background: #fff; --paper-edge: #fff; } /* баг: блок правил не меняет цвет в тёмной теме */
 .rules { max-height: calc(100vh - 88px - var(--dock-h) - 44px); overflow: auto; }
 .rules h2 { font: 700 20px/1.2 var(--display); letter-spacing: -.02em; margin-bottom: 4px; }
 .rules section { padding: 14px 0; border-bottom: 1.5px dashed var(--line); }
@@ -77,12 +85,12 @@
 .tops { display: flex; flex-wrap: wrap; gap: 8px; }
 .tops button {
   display: inline-flex; align-items: center; gap: 6px;
-  border: 1px solid var(--line); background: #fff; border-radius: 999px;
+  border: 1px solid var(--line); background: var(--paper); border-radius: 999px;
   padding: 7px 12px 7px 9px; font-size: 14px; font-weight: 500; cursor: pointer;
 }
 .tops button small { color: var(--muted); font-size: 13px; }
-.tops button[aria-pressed="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
-.tops button[aria-pressed="true"] small { color: #c9cfca; }
+.tops button[aria-pressed="true"] { background: var(--ink); color: var(--on-ink); border-color: var(--ink); }
+.tops button[aria-pressed="true"] small { color: var(--on-ink); opacity: .7; }
 .tops-msg { min-height: 20px; margin-top: 6px; font-size: 14px; color: var(--tomato); }
 
 /* ---------- Заказ ---------- */

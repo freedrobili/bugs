@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Охота на баги: уровень 4</title>
+  <meta name="description" content="Четвёртый уровень мастер-класса по тестированию: баги мобильного приложения, которые ищут в режиме разработчика.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=Unbounded:wght@500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="level4.css">
+  <script src="theme.js"></script>
+</head>
+<body>
+
+<!-- ============ Мобильное приложение «Корж» (здесь живут баги) ============ -->
+<div id="site">
+  <!-- Показывается на компьютере: как включить режим телефона -->
+  <section class="gate wrap">
+    <div class="gate-phone" aria-hidden="true">
+      <div class="gate-screen">
+        <div class="pizza"><span style="left:50%;top:27%">🍅</span><span style="left:28%;top:46%">🌿</span><span style="left:72%;top:44%">🍄</span><span style="left:40%;top:70%">🫒</span><span style="left:64%;top:70%">🍅</span></div>
+        <p>корж</p>
+      </div>
+    </div>
+    <div>
+      <h1>Это мобильное приложение</h1>
+      <p class="lead">Приложение «Корж» сделано для телефонов. Чтобы его протестировать, включи на компьютере режим телефона.</p>
+      <ol class="gate-steps">
+        <li><b>Открой режим разработчика.</b> Клавиша F12 или Ctrl + Shift + I. На Mac — Cmd + Option + I.</li>
+        <li><b>Включи режим устройства.</b> Ctrl + Shift + M, на Mac — Cmd + Shift + M. Или нажми значок с телефоном и планшетом в углу панели разработчика.</li>
+        <li><b>Выбери телефон</b> в списке над страницей, например iPhone 12 Pro.</li>
+        <li><b>Меняй телефоны и поворачивай экран.</b> Некоторые баги видно только на маленьком телефоне или в горизонтальном положении.</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- Показывается в режиме телефона -->
+  <div class="app" id="app">
+    <header class="app-bar">
+      <button class="app-icon" id="back" type="button" aria-label="Назад" hidden data-bug="back-wrong">←</button>
+      <h1 class="app-title" id="appTitle" data-bug="big-text-break">Корж</h1>
+      <button class="app-icon" id="cartIcon" type="button" aria-label="Открыть корзину">🛒<span class="app-dot" id="cartDot" hidden></span></button>
+    </header>
+
+    <main class="screens">
+      <section class="screen" data-screen="home">
+        <p class="hello">Привет! Что закажем?</p>
+        <div class="promo" data-bug="h-scroll">
+          <span class="promo-art" aria-hidden="true">🍕🍕</span>
+          <div>
+            <p class="promo-title">Две пиццы по цене одной</p>
+            <p class="promo-text">Только в приложении, до воскресенья</p>
+          </div>
+        </div>
+        <div class="chips" id="chips" role="group" aria-label="Фильтр">
+          <button type="button" data-tag="all" aria-pressed="true">Все</button>
+          <button type="button" data-tag="meat" aria-pressed="false">Мясные</button>
+          <button type="button" data-tag="veg" aria-pressed="false">Без мяса</button>
+          <button type="button" data-tag="hot" aria-pressed="false">Острые</button>
+        </div>
+        <ul class="p-list" id="pList"></ul>
+      </section>
+
+      <section class="screen" data-screen="product" id="product" hidden></section>
+
+      <section class="screen" data-screen="cart" hidden>
+        <ul class="c-list" id="cList"></ul>
+        <p class="app-empty" id="cEmpty">В корзине пусто. Добавь пиццу из меню.</p>
+        <div class="checkout" id="checkout" hidden>
+          <p class="c-total"><span>Итого</span><b id="cTotal" data-bug="theme-app">0 ₽</b></p>
+          <button class="btn btn-tomato btn-wide" type="button" id="orderBtn" data-bug="checkout-covered">Оформить заказ</button>
+        </div>
+      </section>
+
+      <section class="screen" data-screen="order" hidden>
+        <p class="app-empty" id="noOrder">Пока нет заказов. Выбери пиццу в меню.</p>
+        <div id="orderInfo" hidden>
+          <p class="order-num" id="orderNum">Заказ №1042</p>
+          <ol class="track" data-bug="tracker-steps">
+            <li class="done">Принят</li>
+            <li class="done">Готовим</li>
+            <li>В пути</li>
+            <li class="done">Доставлено</li>
+          </ol>
+          <p class="muted">Курьер выедет примерно через 10 минут.</p>
+          <div class="rate">
+            <p class="rate-title">Оцени доставку</p>
+            <div class="stars-input" id="stars" data-bug="stars-reversed" role="group" aria-label="Оценка">
+              <button type="button" data-star="1" aria-label="1 звезда">★</button>
+              <button type="button" data-star="2" aria-label="2 звезды">★</button>
+              <button type="button" data-star="3" aria-label="3 звезды">★</button>
+              <button type="button" data-star="4" aria-label="4 звезды">★</button>
+              <button type="button" data-star="5" aria-label="5 звёзд">★</button>
+            </div>
+            <p class="muted" id="rateText">Нажми на звезду</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" data-screen="profile" hidden>
+        <div class="me">
+          <span class="me-ava" aria-hidden="true">👤</span>
+          <div>
+            <p class="me-name">Гость</p>
+            <p class="muted">Бонусов: 150</p>
+          </div>
+        </div>
+        <ul class="settings">
+          <li>
+            <span>Тёмная тема</span>
+            <button class="app-switch" type="button" role="switch" data-theme-toggle aria-pressed="false" aria-label="Тёмная тема"><i></i></button>
+          </li>
+          <li data-bug="notif-toggle">
+            <span>Уведомления<small id="notifText">Уведомления выключены</small></span>
+            <button class="app-switch" type="button" role="switch" id="notifSwitch" aria-pressed="false" aria-label="Уведомления"><i></i></button>
+          </li>
+          <li>
+            <span>Крупный текст</span>
+            <button class="app-switch" type="button" role="switch" id="bigSwitch" aria-pressed="false" aria-label="Крупный текст" data-bug="big-text-break"><i></i></button>
+          </li>
+        </ul>
+        <p class="muted version">Версия приложения 1.0.4</p>
+      </section>
+    </main>
+
+    <nav class="tabbar" id="tabbar" data-bug="landscape" aria-label="Разделы приложения">
+      <button type="button" data-tab="home" aria-current="page"><b aria-hidden="true">🍕</b><span>Меню</span></button>
+      <button type="button" data-tab="cart" data-bug="tab-wrong"><b aria-hidden="true">🛒</b><span>Корзина</span><i class="tab-badge" id="tabBadge" hidden>0</i></button>
+      <button type="button" data-tab="order"><b aria-hidden="true">🛵</b><span>Заказ</span></button>
+      <button type="button" data-tab="profile"><b aria-hidden="true">👤</b><span>Профиль</span></button>
+    </nav>
+
+    <div class="app-toast" id="appToast" role="status" hidden>
+      <span id="appToastText"></span>
+      <button type="button" id="appToastBtn">Открыть</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ Игровой слой: режим охоты ============ -->
+<div class="uv" id="uv" aria-hidden="true"></div>
+<div class="lens" id="lens" aria-hidden="true"></div>
+<div class="pins" id="pins" aria-hidden="true"></div>
+
+<div class="pop" id="pop" role="status" aria-live="polite" hidden></div>
+
+<div class="dock" id="dock">
+  <button class="hunt-toggle" id="huntBtn" type="button" aria-pressed="false">
+    <span class="switch" aria-hidden="true"><span class="knob"></span></span>
+    <span class="hunt-label"><b>Режим охоты</b><small id="huntHint">Выключен, клавиша Ф</small></span>
+  </button>
+  <div class="progress">
+    <div class="slots" id="slots" aria-hidden="true"></div>
+    <p><span id="caughtN">0</span> из <span id="totalN">12</span> багов поймано <span class="timer" id="timer">00:00</span></p>
+  </div>
+  <p class="score"><small>Счёт</small><span id="score">0</span></p>
+  <div class="dock-actions">
+    <button class="dock-btn" id="hintBtn" type="button">Подсказка</button>
+    <button class="dock-btn" id="logBtn" type="button">Журнал</button>
+    <button class="dock-btn dock-btn-light" id="finishBtn" type="button">Финиш</button>
+    <nav class="levels" aria-label="Уровни">
+      <span>Уровень</span>
+      <a href="index.html" title="Уровень 1: пиццерия">1</a>
+      <a href="level2.html" title="Уровень 2: праздничный заказ">2</a>
+      <a href="level3.html" title="Уровень 3: парк аттракционов">3</a>
+      <a href="level4.html" title="Уровень 4: мобильное приложение" aria-current="page">4</a>
+    </nav>
+  </div>
+</div>
+
+<dialog class="dlg" id="introDlg" aria-labelledby="introTitle">
+  <form method="dialog" class="dlg-body" id="introForm">
+    <p class="dlg-kicker">Охота на баги, уровень 4</p>
+    <h2 class="dlg-title" id="introTitle" tabindex="-1" autofocus>Мобильное приложение</h2>
+    <p>Это приложение доставки «Корж» для телефона. В нём <b>12 багов</b>: поехавшая вёрстка, кнопки, которые ведут не туда, и экраны, которые ломаются на маленьком телефоне или при повороте.</p>
+    <ol class="steps">
+      <li>Открой режим разработчика (F12) и включи режим устройства: Ctrl + Shift + M, на Mac — Cmd + Shift + M.</li>
+      <li>Пользуйся приложением как покупатель: выбери пиццу, оформи заказ, загляни в профиль.</li>
+      <li>Меняй телефоны, поворачивай экран, включай режим охоты кнопкой внизу и нажимай на баги.</li>
+    </ol>
+    <p class="note">Режим разработчика — главный инструмент тестировщика сайтов: в нём можно проверить сайт на любом телефоне, не держа его в руках.</p>
+    <div class="legend">
+      <span class="chip sev-1">Косметический +10</span>
+      <span class="chip sev-2">Незначительный +20</span>
+      <span class="chip sev-3">Серьёзный +30</span>
+      <span class="chip sev-4">Критический +50</span>
+      <span class="chip chip-minus">Ложная тревога −5</span>
+      <span class="chip chip-minus">Подсказка −5</span>
+    </div>
+    <label class="dlg-label">Как тебя зовут? <small class="dlg-optional">Можно не писать</small>
+      <input class="dlg-input" id="nameInput" maxlength="30" placeholder="Имя или команда" autocomplete="off">
+    </label>
+    <button class="dlg-cta" type="submit">Начать охоту</button>
+    <div class="dlg-row dlg-row-between">
+      <nav class="levels" aria-label="Уровни">
+        <span>Уровень</span>
+        <a href="index.html" title="Уровень 1: пиццерия">1</a>
+        <a href="level2.html" title="Уровень 2: праздничный заказ">2</a>
+        <a href="level3.html" title="Уровень 3: парк аттракционов">3</a>
+        <a href="level4.html" title="Уровень 4: мобильное приложение" aria-current="page">4</a>
+      </nav>
+      <button class="dlg-link" type="button" data-open-stats>Статистика участников</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog class="dlg" id="logDlg" aria-labelledby="logTitle">
+  <div class="dlg-body">
+    <div class="dlg-head">
+      <h2 class="dlg-title dlg-title-sm" id="logTitle">Журнал багов</h2>
+      <button class="dlg-close" type="button" data-close aria-label="Закрыть">×</button>
+    </div>
+    <div id="logList"></div>
+  </div>
+</dialog>
+
+<dialog class="dlg" id="finishDlg" aria-labelledby="finishTitle">
+  <div class="dlg-body" id="finishBody"></div>
+</dialog>
+
+<script src="stats.js" defer></script>
+<script src="level4.js" defer></script>
+</body>
+</html>

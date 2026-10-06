@@ -110,6 +110,18 @@
       steps: 'Заказ на 1000 ₽, скинуться на 3 человек.',
       expected: 'По 334 ₽, вместе 1002 ₽ — хватит на заказ.',
       actual: 'По 333 ₽, вместе 999 ₽ — не хватает рубля.' },
+    { id: 'theme-rules', sev: 2, type: 'Тема', area: 'Как мы считаем',
+      title: 'В тёмной теме пропадают правила',
+      hint: 'Включи тёмную тему кнопкой с луной в шапке и попробуй прочитать правила.',
+      steps: 'Включить тёмную тему кнопкой 🌙 в шапке.',
+      expected: 'Блок «Как мы считаем» тоже становится тёмным, текст читается.',
+      actual: 'Блок остался белым, а текст стал светлым — правила не прочитать.' },
+    { id: 'big-text', sev: 2, type: 'Вёрстка', area: 'Первый экран',
+      title: '«Крупный шрифт» ломает страницу',
+      hint: 'Под заголовком страницы есть кнопка для крупного шрифта. Нажми её.',
+      steps: 'Нажать «Крупный шрифт» под заголовком страницы.',
+      expected: 'Текст становится крупнее, но всё помещается на своих местах.',
+      actual: 'Заголовки налезают на соседние блоки и вылезают за края, большие числа не помещаются.' },
   ];
 
   const PENALTY = 5;
@@ -399,6 +411,18 @@
     clearTimeout(toastTimer);
     toastTimer = setTimeout(() => { t.hidden = true; }, 2400);
   }
+
+  // --- Крупный шрифт
+  $('#bigText').addEventListener('click', e => {
+    const on = !document.body.classList.contains('big-text');
+    document.body.classList.toggle('big-text', on); // баг: вёрстка не рассчитана на крупный шрифт
+    if (on) arm('big-text');
+    e.currentTarget.setAttribute('aria-pressed', String(on));
+  });
+
+  // --- Тема: баг виден, когда включена тёмная тема (theme.js)
+  document.addEventListener('themechange', e => { if (e.detail === 'dark') arm('theme-rules'); });
+  if (document.documentElement.dataset.theme === 'dark') arm('theme-rules');
 
   $('#year').textContent = new Date().getFullYear();
   renderCalc();
