@@ -414,6 +414,8 @@
     startedAt: null, finishedAt: null, missNoteShown: false,
   });
   let state = load() || fresh();
+  // прогресс, сохранённый старой версией сайта, получает участника для статистики
+  if (state.startedAt && !state.participant) { state.participant = BugStats.startParticipant(state.name || ''); save(); }
 
   function load() {
     try {

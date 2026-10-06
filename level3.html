@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Охота на баги: уровень 3</title>
+  <meta name="description" content="Третий уровень мастер-класса по тестированию: простые и забавные баги на сайте парка аттракционов.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=Unbounded:wght@500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="level3.css">
+</head>
+<body>
+
+<!-- ============ Сайт парка аттракционов «Вираж» (здесь живут баги) ============ -->
+<div id="site">
+  <header class="header">
+    <div class="wrap header-inner">
+      <a class="logo" href="#top">вираж</a>
+      <nav class="nav" aria-label="Основное меню">
+        <a href="#rides">Аттракционы</a>
+        <a href="#photos">Фото</a>
+        <a href="#tickets">Билеты</a>
+        <a href="#band">Браслет</a>
+      </nav>
+      <a class="cart-btn" href="#tickets">Купить билет</a>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="p-hero wrap">
+      <div class="p-hero-text">
+        <h1>Горки, колесо обозрения и сладкая вата</h1>
+        <p class="lead">Парк «Вираж» в центре города. Купи билет онлайн и проходи без очереди.</p>
+        <div class="widgets">
+          <div class="widget" data-bug="weather">
+            <span class="w-icon" aria-hidden="true">❄️</span>
+            <p class="w-big">+35°</p>
+            <p class="w-small">Сегодня снег</p>
+          </div>
+          <div class="widget" data-bug="firework-countdown">
+            <span class="w-icon" aria-hidden="true">🎆</span>
+            <p class="w-big" id="fwTimer">00:15:00</p>
+            <p class="w-small">До фейерверка</p>
+          </div>
+          <div class="widget" data-bug="hours-text">
+            <span class="w-icon" aria-hidden="true">🕙</span>
+            <p class="w-big">10–22</p>
+            <p class="w-small">Каждый день. Выходной — понедельник</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel map-card">
+        <h2 class="panel-title">Карта парка</h2>
+        <p class="muted" id="mapStatus">Загружаем карту…</p>
+        <div class="loader" data-bug="loader-overflow">
+          <div class="loader-bar" id="mapBar"></div>
+        </div>
+        <p class="loader-num" id="mapNum">0%</p>
+        <div class="qr-row">
+          <img class="qr" src="assets/qr-map.svg" alt="QR-код карты парка" width="132" height="132" data-bug="qr-map">
+          <p>Отсканируй камерой телефона, чтобы открыть карту парка у себя.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Аттракционы -->
+    <section class="section wrap" id="rides">
+      <div class="section-head"><h2>Аттракционы</h2></div>
+      <div class="rides">
+        <article class="ride">
+          <div class="ride-art" aria-hidden="true">🎢</div>
+          <h3>Мёртвая петля</h3>
+          <p class="desc">Скорость 90 км/ч и две петли вниз головой. С 14 лет.</p>
+          <div class="queue">
+            <p><span>Очередь</span><b>пройдено 80%</b></p>
+            <div class="queue-track" data-bug="queue-bar"><div class="queue-bar" style="width: 22%"></div></div>
+          </div>
+          <form class="age-check" data-ride="loop">
+            <label>Сколько тебе лет?
+              <input class="field" type="number" inputmode="numeric" placeholder="Например, 12">
+            </label>
+            <button class="btn btn-dark" type="submit">Проверить</button>
+          </form>
+          <p class="age-result" data-bug="age-string" aria-live="polite"></p>
+        </article>
+
+        <article class="ride">
+          <div class="ride-art" aria-hidden="true">🎠</div>
+          <h3>Пони-карусель</h3>
+          <p class="desc">Спокойная карусель с лошадками и музыкой. Для детей от 3 до 10 лет.</p>
+          <form class="age-check" data-ride="pony">
+            <label>Сколько тебе лет?
+              <input class="field" type="number" inputmode="numeric" placeholder="Например, 6">
+            </label>
+            <button class="btn btn-dark" type="submit">Проверить</button>
+          </form>
+          <p class="age-result" data-bug="age-absurd" aria-live="polite"></p>
+        </article>
+
+        <article class="ride">
+          <div class="ride-art" aria-hidden="true">🎡</div>
+          <h3>Колесо обозрения</h3>
+          <p class="desc">50 метров над городом. Кабинку можно забронировать заранее.</p>
+          <p class="seats">Свободных кабинок: <b id="seatsFree" data-bug="seats-increase">12</b></p>
+          <form class="book" id="bookForm">
+            <label class="sr-only" for="seatsQty">Сколько кабинок</label>
+            <select class="field" id="seatsQty">
+              <option value="1">1 кабинка</option>
+              <option value="2">2 кабинки</option>
+              <option value="3">3 кабинки</option>
+            </select>
+            <button class="btn btn-dark" type="submit">Забронировать</button>
+          </form>
+          <p class="age-result" id="bookMsg" aria-live="polite"></p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Фото -->
+    <section class="section wrap" id="photos">
+      <div class="section-head"><h2>Фото из парка</h2></div>
+      <div class="gallery">
+        <div class="slide" id="slide"></div>
+        <div class="gallery-bar">
+          <button class="g-btn" type="button" id="gPrev" aria-label="Предыдущее фото">←</button>
+          <span class="g-count" id="gCount">1 / 5</span>
+          <button class="g-btn" type="button" id="gNext" aria-label="Следующее фото" data-bug="gallery-arrows">→</button>
+          <button class="like" type="button" id="like" aria-pressed="false" data-bug="like-decrease">
+            <span aria-hidden="true">❤</span> <span id="likeN">128</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Билеты -->
+    <section class="section wrap" id="tickets">
+      <div class="section-head"><h2>Билеты</h2></div>
+      <div class="tickets">
+        <div class="panel ticket-offer">
+          <p class="ticket-name">Билет «Весь день»</p>
+          <p class="ticket-price">900 ₽</p>
+          <p class="muted">Все аттракционы без ограничений с 10:00 до 22:00.</p>
+          <button class="btn btn-tomato" type="button" id="buyBtn">Купить билет</button>
+        </div>
+        <div class="panel my-tickets">
+          <h3 class="panel-title">Мои билеты</h3>
+          <p class="muted" id="noTickets">Пока нет билетов.</p>
+          <div class="ticket" id="ticket" hidden>
+            <img class="qr" src="assets/qr-ticket.svg" alt="QR-код билета" width="150" height="150" data-bug="qr-ticket">
+            <div>
+              <p class="ticket-name">Весь день</p>
+              <p class="muted">Покажи QR-код на входе или отсканируй его, чтобы открыть билет в телефоне.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Браслет -->
+    <section class="section wrap" id="band">
+      <div class="section-head"><h2>Браслет посетителя</h2></div>
+      <div class="panel band">
+        <div>
+          <p class="muted">На браслете</p>
+          <p class="band-balance" id="balance" data-bug="balance-topup">300 ₽</p>
+          <p class="muted">Прикладывай браслет к кассе, чтобы купить вату, лимонад и сувениры.</p>
+        </div>
+        <div>
+          <p class="lbl">Пополнить на</p>
+          <div class="topup" id="topup">
+            <button class="btn btn-ghost" type="button" data-sum="100">100 ₽</button>
+            <button class="btn btn-ghost" type="button" data-sum="300">300 ₽</button>
+            <button class="btn btn-ghost" type="button" data-sum="500">500 ₽</button>
+          </div>
+          <p class="band-msg" id="bandMsg" aria-live="polite"></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <div>
+        <p class="logo logo-light">вираж</p>
+        <p>Парк аттракционов</p>
+      </div>
+      <div><h4>Адрес</h4><p>Набережная, 1</p></div>
+      <div><h4>Телефон</h4><p>+7 900 000-56-78</p></div>
+      <div><h4>Часы работы</h4><p>Ежедневно 10:00–22:00</p></div>
+    </div>
+    <div class="wrap"><p class="copy">© <span id="year">2026</span> Парк «Вираж»</p></div>
+  </footer>
+
+  <!-- Покупка билета -->
+  <div class="confirm" id="confirm" hidden>
+    <div class="confirm-box" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+      <div id="confirmAsk">
+        <p class="confirm-title" id="confirmTitle">Купить билет «Весь день» за 900 ₽?</p>
+        <div class="confirm-actions">
+          <button class="btn btn-ghost" type="button" data-answer="no">Нет</button>
+          <button class="btn btn-tomato" type="button" data-answer="yes">Да</button>
+        </div>
+      </div>
+      <div id="confirmDone" hidden>
+        <p class="confirm-title" id="confirmResult" data-bug="confirm-swap"></p>
+        <div class="confirm-actions">
+          <button class="btn btn-dark" type="button" data-answer="close">Закрыть</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Реклама -->
+  <aside class="ad" id="ad" hidden aria-label="Реклама">
+    <button class="ad-close" id="adClose" type="button" aria-label="Закрыть рекламу" data-bug="ad-close-run">×</button>
+    <span class="ad-art" aria-hidden="true">🍭</span>
+    <div>
+      <p class="ad-title">Сладкая вата за полцены!</p>
+      <p class="ad-text">Только сегодня у колеса обозрения.</p>
+    </div>
+  </aside>
+</div>
+
+<!-- ============ Игровой слой: режим охоты ============ -->
+<div class="uv" id="uv" aria-hidden="true"></div>
+<div class="lens" id="lens" aria-hidden="true"></div>
+<div class="pins" id="pins" aria-hidden="true"></div>
+
+<div class="pop" id="pop" role="status" aria-live="polite" hidden></div>
+
+<div class="dock" id="dock">
+  <button class="hunt-toggle" id="huntBtn" type="button" aria-pressed="false">
+    <span class="switch" aria-hidden="true"><span class="knob"></span></span>
+    <span class="hunt-label"><b>Режим охоты</b><small id="huntHint">Выключен, клавиша Ф</small></span>
+  </button>
+  <div class="progress">
+    <div class="slots" id="slots" aria-hidden="true"></div>
+    <p><span id="caughtN">0</span> из <span id="totalN">15</span> багов поймано <span class="timer" id="timer">00:00</span></p>
+  </div>
+  <p class="score"><small>Счёт</small><span id="score">0</span></p>
+  <div class="dock-actions">
+    <button class="dock-btn" id="hintBtn" type="button">Подсказка</button>
+    <button class="dock-btn" id="logBtn" type="button">Журнал</button>
+    <button class="dock-btn dock-btn-light" id="finishBtn" type="button">Финиш</button>
+    <nav class="levels" aria-label="Уровни">
+      <span>Уровень</span>
+      <a href="index.html" title="Уровень 1: пиццерия">1</a>
+      <a href="level2.html" title="Уровень 2: праздничный заказ">2</a>
+      <a href="level3.html" title="Уровень 3: парк аттракционов" aria-current="page">3</a>
+    </nav>
+  </div>
+</div>
+
+<dialog class="dlg" id="introDlg" aria-labelledby="introTitle">
+  <form method="dialog" class="dlg-body" id="introForm">
+    <p class="dlg-kicker">Охота на баги, уровень 3</p>
+    <h2 class="dlg-title" id="introTitle" tabindex="-1" autofocus>Парк аттракционов</h2>
+    <p>В парке «Вираж» спрятались <b>15 простых и смешных багов</b>: убегающая кнопка, полоски, которые врут, QR-коды, ведущие не туда, и счётчики, которые идут не в ту сторону.</p>
+    <ol class="steps">
+      <li>Пользуйся сайтом как посетитель парка: проверь возраст, забронируй кабинку, купи билет, пополни браслет.</li>
+      <li>QR-коды сканируй камерой телефона. Туда ли они ведут?</li>
+      <li>Включи режим охоты кнопкой внизу или клавишей Ф и нажми на баг.</li>
+    </ol>
+    <p class="note">Некоторые баги проявляются через несколько секунд. Понаблюдай за страницей.</p>
+    <div class="legend">
+      <span class="chip sev-1">Косметический +10</span>
+      <span class="chip sev-2">Незначительный +20</span>
+      <span class="chip sev-3">Серьёзный +30</span>
+      <span class="chip sev-4">Критический +50</span>
+      <span class="chip chip-minus">Ложная тревога −5</span>
+      <span class="chip chip-minus">Подсказка −5</span>
+    </div>
+    <label class="dlg-label">Как тебя зовут? <small class="dlg-optional">Можно не писать</small>
+      <input class="dlg-input" id="nameInput" maxlength="30" placeholder="Имя или команда" autocomplete="off">
+    </label>
+    <button class="dlg-cta" type="submit">Начать охоту</button>
+    <div class="dlg-row dlg-row-between">
+      <nav class="levels" aria-label="Уровни">
+        <span>Уровень</span>
+        <a href="index.html" title="Уровень 1: пиццерия">1</a>
+        <a href="level2.html" title="Уровень 2: праздничный заказ">2</a>
+        <a href="level3.html" title="Уровень 3: парк аттракционов" aria-current="page">3</a>
+      </nav>
+      <button class="dlg-link" type="button" data-open-stats>Статистика участников</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog class="dlg" id="logDlg" aria-labelledby="logTitle">
+  <div class="dlg-body">
+    <div class="dlg-head">
+      <h2 class="dlg-title dlg-title-sm" id="logTitle">Журнал багов</h2>
+      <button class="dlg-close" type="button" data-close aria-label="Закрыть">×</button>
+    </div>
+    <div id="logList"></div>
+  </div>
+</dialog>
+
+<dialog class="dlg" id="finishDlg" aria-labelledby="finishTitle">
+  <div class="dlg-body" id="finishBody"></div>
+</dialog>
+
+<script src="stats.js" defer></script>
+<script src="level3.js" defer></script>
+</body>
+</html>

@@ -310,6 +310,14 @@ body.hunting .dock { box-shadow: 0 0 0 2px var(--uv), 0 14px 60px var(--glow); }
 }
 .dock-btn:hover { background: var(--night-2); }
 a.dock-btn { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; }
+.levels { display: flex; align-items: center; gap: 3px; background: var(--night-2); border-radius: 12px; padding: 4px; }
+.levels span { font-size: 13px; color: #b5aed3; padding: 0 6px 0 8px; }
+.levels a {
+  min-width: 32px; height: 32px; display: grid; place-items: center; border-radius: 9px;
+  color: #fff; text-decoration: none; font: 700 14px var(--display);
+}
+.levels a:hover { background: var(--night-3); }
+.levels a[aria-current="page"] { background: var(--uv); }
 .dock-btn-light { background: #fff; color: var(--night); border-color: #fff; }
 .dock-btn-light:hover { background: var(--uv-light); }
 
@@ -466,7 +474,9 @@ a.dock-btn { display: inline-flex; align-items: center; justify-content: center;
   .hunt-label small, .timer { display: none; }
   .hunt-toggle { padding: 8px 12px 8px 8px; }
   .score span { font-size: 22px; }
-  .dock-btn { padding: 8px 10px; }
+  .dock-btn { padding: 8px 6px; font-size: 13px; min-width: 0; }
+  .dock .levels span { display: none; }
+  .dock .levels a { min-width: 28px; height: 30px; }
   .pop { right: 8px; width: calc(100% - 16px); padding: 18px; }
   .dlg-body { padding: 26px 20px; }
   .stats { grid-template-columns: 1fr 1fr; }

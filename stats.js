@@ -1,5 +1,5 @@
 /* =====================================================================
-   Статистика участников для обоих уровней «Охоты на баги».
+   Статистика участников для всех уровней «Охоты на баги».
 
    Сценарий: один компьютер, дети подходят по очереди. Каждый вводит имя
    (можно не вводить), играет, нажимает «Следующий участник».
@@ -13,7 +13,7 @@ window.BugStats = (() => {
 
   const ROWS_KEY = 'korzh-bughunt-stats-v1';
   const PARTICIPANT_KEY = 'korzh-bughunt-participant-v1';
-  const PROGRESS_KEYS = ['korzh-bughunt-v1', 'korzh-bughunt-l2-v1'];
+  const PROGRESS_KEYS = ['korzh-bughunt-v1', 'korzh-bughunt-l2-v1', 'korzh-bughunt-l3-v1'];
   const COLUMNS = [
     ['at', 'Дата и время'], ['name', 'Участник'], ['level', 'Уровень'], ['event', 'Событие'],
     ['bug', 'Баг'], ['severity', 'Серьёзность'], ['points', 'Баллы'], ['clock', 'Время от старта'],
@@ -41,7 +41,7 @@ window.BugStats = (() => {
     : Promise.resolve();
   let queue = ready;
 
-  // --- Участник у компьютера: имя и код общие для обоих уровней
+  // --- Участник у компьютера: имя и код общие для всех уровней
   function participant() {
     return read(PARTICIPANT_KEY, null);
   }

@@ -237,7 +237,12 @@
     <button class="dock-btn" id="hintBtn" type="button">Подсказка</button>
     <button class="dock-btn" id="logBtn" type="button">Журнал</button>
     <button class="dock-btn dock-btn-light" id="finishBtn" type="button">Финиш</button>
-    <a class="dock-btn" href="index.html">Уровень 1</a>
+    <nav class="levels" aria-label="Уровни">
+      <span>Уровень</span>
+      <a href="index.html" title="Уровень 1: пиццерия">1</a>
+      <a href="level2.html" title="Уровень 2: праздничный заказ" aria-current="page">2</a>
+      <a href="level3.html" title="Уровень 3: парк аттракционов">3</a>
+    </nav>
   </div>
 </div>
 
@@ -265,7 +270,12 @@
     </label>
     <button class="dlg-cta" type="submit">Начать охоту</button>
     <div class="dlg-row dlg-row-between">
-      <a class="dlg-link" href="index.html">Вернуться на уровень 1</a>
+      <nav class="levels" aria-label="Уровни">
+        <span>Уровень</span>
+        <a href="index.html" title="Уровень 1: пиццерия">1</a>
+        <a href="level2.html" title="Уровень 2: праздничный заказ" aria-current="page">2</a>
+        <a href="level3.html" title="Уровень 3: парк аттракционов">3</a>
+      </nav>
       <button class="dlg-link" type="button" data-open-stats>Статистика участников</button>
     </div>
   </form>
