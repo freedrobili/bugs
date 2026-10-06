@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Охота на баги</title>
+  <meta name="description" content="Учебный сайт для мастер-класса по тестированию: найди баги на сайте пиццерии и собери баллы.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=Unbounded:wght@500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ============ Учебный сайт пиццерии (здесь живут баги) ============ -->
+<div id="site">
+  <header class="header">
+    <div class="wrap header-inner">
+      <a class="logo" href="#top">корж</a>
+      <nav class="nav" aria-label="Основное меню">
+        <a href="#menu">Меню</a>
+        <a href="#checkout" data-bug="nav-typo">Достафка</a>
+        <a href="#reviews">Отзывы</a>
+        <a href="#reviews" id="contactsLink" data-bug="nav-contacts">Контакты</a>
+      </nav>
+      <a class="cart-btn" href="#checkout">Корзина <span class="badge" id="badge" data-bug="cart-badge">0</span></a>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero wrap" id="hero">
+      <div class="hero-text">
+        <h1>Пицца из дровяной печи за 30 минут</h1>
+        <p class="lead">Печём на Садовой, 12 и привозим горячей в любую точку района.</p>
+        <div class="hero-actions">
+          <button class="btn btn-tomato" id="runBtn" type="button" data-bug="hero-run">Заказать</button>
+          <a class="btn btn-ghost" href="#menu">Смотреть меню</a>
+        </div>
+      </div>
+      <div class="hero-art" id="heroArt" aria-hidden="true"></div>
+    </section>
+
+    <div class="strip">
+      <div class="wrap strip-inner">
+        <p>Промокод <b>ШКОЛА</b> даёт скидку 10%</p>
+        <p class="faint" data-bug="promo-contrast">По средам третья пицца бесплатно</p>
+        <p>Доставка бесплатно от 1000 ₽</p>
+      </div>
+    </div>
+
+    <section class="section wrap" id="menu">
+      <div class="section-head">
+        <h2>Меню</h2>
+        <label class="search">
+          <span class="sr-only">Найти пиццу</span>
+          <input class="field" id="search" type="search" placeholder="Найти пиццу" autocomplete="off">
+        </label>
+      </div>
+      <div class="grid" id="grid"></div>
+      <p class="empty" id="empty" data-bug="search-case" hidden>Ничего не нашлось. Попробуй другое название.</p>
+    </section>
+
+    <section class="section wrap" id="checkout">
+      <div class="section-head"><h2>Оформление заказа</h2></div>
+      <div class="checkout">
+        <div class="panel">
+          <h3>Корзина</h3>
+          <ul class="cart-list" id="cartList"></ul>
+          <p class="cart-empty" id="cartEmpty">Корзина пуста. Добавь пиццу из меню.</p>
+          <form class="promo" id="promoForm">
+            <label class="sr-only" for="promo">Промокод</label>
+            <input class="field" id="promo" placeholder="Промокод" autocomplete="off">
+            <button class="btn btn-dark" type="submit">Применить</button>
+          </form>
+          <p class="promo-msg" id="promoMsg" aria-live="polite"></p>
+          <dl class="totals">
+            <div><dt>Пиццы</dt><dd id="sub">0 ₽</dd></div>
+            <div data-bug="delivery-fee"><dt>Доставка<small>бесплатно от 1000 ₽</small></dt><dd id="deliv">0 ₽</dd></div>
+            <div id="discRow" data-bug="promo-stack" hidden><dt>Скидка по промокоду</dt><dd id="disc">0 ₽</dd></div>
+            <div class="total"><dt>Итого</dt><dd id="total">0 ₽</dd></div>
+          </dl>
+        </div>
+
+        <form class="panel order" id="orderForm" novalidate>
+          <h3>Куда везти</h3>
+          <label>Имя
+            <input class="field" id="fName" placeholder="Введите email" autocomplete="off" data-bug="name-placeholder">
+          </label>
+          <label>Телефон
+            <input class="field" id="fPhone" type="text" inputmode="tel" placeholder="+7 900 000-00-00" autocomplete="off" data-bug="phone-letters">
+          </label>
+          <label>Адрес
+            <input class="field" id="fAddr" placeholder="Улица, дом, квартира" autocomplete="off">
+          </label>
+          <label>Время доставки
+            <select class="field" id="fTime" data-bug="time-25">
+              <option value="asap">Как можно скорее</option>
+              <option>12:00</option>
+              <option>14:00</option>
+              <option>16:00</option>
+              <option>18:00</option>
+              <option>20:00</option>
+              <option>22:00</option>
+              <option>25:00</option>
+            </select>
+          </label>
+          <label>Комментарий для курьера
+            <textarea class="field" id="fNote" rows="2" placeholder="Например, домофон не работает"></textarea>
+          </label>
+          <p class="form-error" id="formError" aria-live="polite"></p>
+          <button class="btn btn-tomato btn-wide" type="submit">Оформить заказ</button>
+          <div class="success" id="success" data-bug="success-name" aria-live="polite" hidden></div>
+        </form>
+      </div>
+    </section>
+
+    <section class="section wrap reviews" id="reviews">
+      <div class="section-head"><h2>Отзывы</h2></div>
+      <div class="review-grid">
+        <article class="review">
+          <p class="stars"><span aria-hidden="true">★★★★<span class="star-off">★</span></span> 4 из 5</p>
+          <p data-bug="review-overflow">Вкусно, но хочу больше сыра. Короче, это была <span class="long">самаяСырнаяИВкуснаяПиццаКоторуюЯКогдаЛибоПробовалаВСвоейЖизниЧестноЧестно!!!</span></p>
+          <p class="who">Алиса</p>
+        </article>
+        <article class="review">
+          <p class="stars" data-bug="rating-stars"><span aria-hidden="true">★★★★★★</span> 5 из 5</p>
+          <p>Пепперони лучшая в районе. Беру каждую пятницу после тренировки.</p>
+          <p class="who">Миша</p>
+        </article>
+        <article class="review">
+          <p class="stars"><span aria-hidden="true">★★★★★</span> 5 из 5</p>
+          <p>Заказывали на день рождения брата. Привезли за 25 минут, пицца ещё шипела.</p>
+          <p class="who">Даша, 7 «Б»</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" id="contacts">
+    <div class="wrap footer-inner">
+      <div>
+        <p class="logo logo-light">корж</p>
+        <p>Пиццерия на Садовой</p>
+      </div>
+      <div><h4>Адрес</h4><p>ул. Садовая, 12</p></div>
+      <div><h4>Телефон</h4><p>+7 900 000-12-34</p></div>
+      <div><h4>Часы работы</h4><p>Ежедневно 10:00–23:00</p></div>
+    </div>
+    <div class="wrap"><p class="copy" data-bug="footer-year">© 2062 Пиццерия «Корж»</p></div>
+  </footer>
+
+  <div class="site-toast" id="siteToast" role="status" hidden></div>
+</div>
+
+<!-- ============ Игровой слой: режим охоты ============ -->
+<div class="uv" id="uv" aria-hidden="true"></div>
+<div class="lens" id="lens" aria-hidden="true"></div>
+<div class="pins" id="pins" aria-hidden="true"></div>
+
+<div class="pop" id="pop" role="status" aria-live="polite" hidden></div>
+
+<div class="dock" id="dock">
+  <button class="hunt-toggle" id="huntBtn" type="button" aria-pressed="false">
+    <span class="switch" aria-hidden="true"><span class="knob"></span></span>
+    <span class="hunt-label"><b>Режим охоты</b><small id="huntHint">Выключен, клавиша Ф</small></span>
+  </button>
+  <div class="progress">
+    <div class="slots" id="slots" aria-hidden="true"></div>
+    <p><span id="caughtN">0</span> из <span id="totalN">19</span> багов поймано <span class="timer" id="timer">00:00</span></p>
+  </div>
+  <p class="score"><small>Счёт</small><span id="score">0</span></p>
+  <div class="dock-actions">
+    <button class="dock-btn" id="hintBtn" type="button">Подсказка</button>
+    <button class="dock-btn" id="logBtn" type="button">Журнал</button>
+    <button class="dock-btn dock-btn-light" id="finishBtn" type="button">Финиш</button>
+    <a class="dock-btn" href="level2.html">Уровень 2</a>
+  </div>
+</div>
+
+<dialog class="dlg" id="introDlg" aria-labelledby="introTitle">
+  <form method="dialog" class="dlg-body" id="introForm">
+    <h2 class="dlg-title" id="introTitle" tabindex="-1" autofocus>Охота на баги</h2>
+    <p>Перед тобой сайт пиццерии «Корж». Его делали в спешке, и в нём спряталось <b>19 багов</b>: убегающие кнопки, ошибки в расчётах, опечатки и странная логика. Найди их, как настоящий тестировщик.</p>
+    <ol class="steps">
+      <li>Пользуйся сайтом как покупатель: ищи пиццу, клади в корзину, оформляй заказ.</li>
+      <li>Видишь что-то странное — включи режим охоты кнопкой внизу или клавишей Ф.</li>
+      <li>Нажми на место, где прячется баг. За каждый пойманный баг — баллы и готовый баг-репорт.</li>
+    </ol>
+    <p class="note">Некоторые баги появляются только после действий. Пока баг не воспроизведён, поймать его нельзя.</p>
+    <div class="legend">
+      <span class="chip sev-1">Косметический +10</span>
+      <span class="chip sev-2">Незначительный +20</span>
+      <span class="chip sev-3">Серьёзный +30</span>
+      <span class="chip sev-4">Критический +50</span>
+      <span class="chip chip-minus">Ложная тревога −5</span>
+      <span class="chip chip-minus">Подсказка −5</span>
+    </div>
+    <label class="dlg-label">Как тебя зовут? <small class="dlg-optional">Можно не писать</small>
+      <input class="dlg-input" id="nameInput" maxlength="30" placeholder="Имя или команда" autocomplete="off">
+    </label>
+    <button class="dlg-cta" type="submit">Начать охоту</button>
+    <div class="dlg-row dlg-row-between">
+      <a class="dlg-link" href="level2.html">Перейти на уровень 2</a>
+      <button class="dlg-link" type="button" data-open-stats>Статистика участников</button>
+    </div>
+    <p class="fineprint">Учебный сайт. Пиццерии «Корж» не существует, заказы никуда не отправляются.</p>
+  </form>
+</dialog>
+
+<dialog class="dlg" id="logDlg" aria-labelledby="logTitle">
+  <div class="dlg-body">
+    <div class="dlg-head">
+      <h2 class="dlg-title dlg-title-sm" id="logTitle">Журнал багов</h2>
+      <button class="dlg-close" type="button" data-close aria-label="Закрыть">×</button>
+    </div>
+    <div id="logList"></div>
+  </div>
+</dialog>
+
+<dialog class="dlg" id="finishDlg" aria-labelledby="finishTitle">
+  <div class="dlg-body" id="finishBody"></div>
+</dialog>
+
+<script src="stats.js" defer></script>
+<script src="app.js" defer></script>
+</body>
+</html>

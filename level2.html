@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Охота на баги: уровень 2</title>
+  <meta name="description" content="Второй уровень мастер-класса по тестированию: баги в расчётах и логике на сайте праздничного заказа пиццы.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=Unbounded:wght@500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="level2.css">
+</head>
+<body>
+
+<!-- ============ Сайт «Корж. Праздник» (здесь живут баги) ============ -->
+<div id="site">
+  <header class="header">
+    <div class="wrap header-inner">
+      <a class="logo" href="#top">корж</a>
+      <nav class="nav" aria-label="Основное меню">
+        <a href="#calc">Калькулятор</a>
+        <a href="#builder">Конструктор</a>
+        <a href="#delivery">Доставка</a>
+        <a href="#order">Заказ</a>
+      </nav>
+      <a class="cart-btn" href="#order">Заказ <span class="badge" id="badge">0</span></a>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="l2-hero wrap">
+      <div>
+        <h1>Пицца на праздник для всего класса</h1>
+        <p class="lead">Посчитаем, сколько нужно пиццы, соберём свою и разделим счёт поровну.</p>
+      </div>
+      <div class="size-row" id="sizeRow" aria-hidden="true"></div>
+    </section>
+
+    <div class="wrap l2-layout">
+      <aside class="rules-col" aria-labelledby="rulesTitle">
+        <div class="receipt rules">
+          <h2 id="rulesTitle">Как мы считаем</h2>
+          <section>
+            <h3>Куски</h3>
+            <p>25 см — 6 кусков, 30 см — 8, 35 см — 10.</p>
+            <p>Пиццу берём с запасом: если кусков не хватает хотя бы одному гостю, добавляем ещё одну пиццу.</p>
+          </section>
+          <section>
+            <h3>Цены</h3>
+            <p>Маргарита: 25 см — 400 ₽, 30 см — 500 ₽, 35 см — 650 ₽.</p>
+            <p>Своя пицца: основа 300, 400 или 500 ₽ плюс добавки. Для 35 см добавки в 1,5 раза дороже. Не больше 5 добавок.</p>
+          </section>
+          <section>
+            <h3>Акции</h3>
+            <p>Если в заказе 3 пиццы и больше, самая дешёвая — в подарок.</p>
+            <p>Если после подарка сумма от 2000 ₽, скидка 15%. Считаем от суммы после подарка.</p>
+          </section>
+          <section>
+            <h3>Доставка</h3>
+            <p>До 3 км бесплатно. Дальше 49 ₽ за каждый километр после третьего.</p>
+            <p>Если пицц в заказе на 1500 ₽ и больше, доставка бесплатно на любое расстояние.</p>
+            <p>Готовим 25 минут, курьер едет 4 минуты на каждый километр.</p>
+          </section>
+          <section>
+            <h3>Бонусы</h3>
+            <p>1 бонус = 1 ₽. Списать можно не больше, чем есть на счёте.</p>
+            <p>Начисляем 5% бонусами от суммы, оплаченной деньгами.</p>
+          </section>
+          <section>
+            <h3>Скинуться</h3>
+            <p>Делим сумму к оплате на всех и округляем вверх до рубля, чтобы хватило на весь заказ.</p>
+          </section>
+        </div>
+      </aside>
+
+      <div class="l2-main">
+        <!-- Калькулятор -->
+        <section class="l2-section" id="calc">
+          <h2>Сколько нужно пиццы</h2>
+          <div class="panel calc">
+            <div class="form-col">
+              <label>Гостей
+                <input class="field" id="cGuests" type="number" min="1" max="99" value="10" inputmode="numeric">
+              </label>
+              <label>Аппетит
+                <select class="field" id="cAppetite">
+                  <option value="2">Лёгкий — 2 куска</option>
+                  <option value="3" selected>Обычный — 3 куска</option>
+                  <option value="4">Голодный — 4 куска</option>
+                </select>
+              </label>
+              <div>
+                <span class="lbl">Размер пиццы</span>
+                <div class="sizes" id="cSizes" role="group" aria-label="Размер пиццы"></div>
+              </div>
+            </div>
+            <div class="calc-out">
+              <dl class="lines">
+                <div><dt>Всего кусков</dt><dd id="cSlices">0</dd></div>
+                <div data-bug="calc-slices35"><dt>Кусков в одной пицце</dt><dd id="cPer">0</dd></div>
+              </dl>
+              <p class="calc-need">Нужно</p>
+              <p class="calc-big" data-bug="calc-floor"><span id="cPizzas">0</span> <span id="cWord">пицц</span></p>
+              <p class="muted">Маргарита, <span id="cSizeName">30 см</span></p>
+              <button class="btn btn-tomato" id="cAdd" type="button">Добавить в заказ</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Конструктор -->
+        <section class="l2-section" id="builder">
+          <h2>Собери свою пиццу</h2>
+          <div class="panel builder">
+            <div class="builder-art"><div class="pizza" id="bPreview"></div></div>
+            <div class="form-col">
+              <div>
+                <span class="lbl">Размер</span>
+                <div class="sizes" id="bSizes" role="group" aria-label="Размер своей пиццы"></div>
+              </div>
+              <div>
+                <p class="lbl" data-bug="topping-limit">Добавки: выбрано <b id="bCount">0 из 5</b></p>
+                <div class="tops" id="bTops"></div>
+                <p class="tops-msg" id="bMsg" aria-live="polite"></p>
+              </div>
+              <dl class="lines">
+                <div><dt>Основа</dt><dd id="bBase">0 ₽</dd></div>
+                <div data-bug="topping-size"><dt>Добавки</dt><dd id="bTopsSum">0 ₽</dd></div>
+                <div class="lines-total" data-bug="builder-stale"><dt>Итого</dt><dd id="bTotal">0 ₽</dd></div>
+              </dl>
+              <button class="btn btn-tomato" id="bAdd" type="button">Добавить в заказ</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Доставка -->
+        <section class="l2-section" id="delivery">
+          <h2>Доставка</h2>
+          <div class="panel delivery">
+            <div class="form-col">
+              <label>Расстояние до вас, км
+                <input class="field" id="dKm" type="number" min="0" max="30" value="2" inputmode="numeric">
+              </label>
+              <label>Время заказа
+                <input class="field" id="dTime" type="time" value="18:30">
+              </label>
+            </div>
+            <div>
+              <dl class="lines">
+                <div><dt>Пицц в заказе на</dt><dd id="dSub">0 ₽</dd></div>
+                <div data-bug="delivery-km"><dt>Платных километров</dt><dd id="dPaidKm">0</dd></div>
+                <div data-bug="free-delivery-boundary"><dt>Стоимость доставки</dt><dd id="dFee">0 ₽</dd></div>
+              </dl>
+              <p class="calc-need">Привезём к</p>
+              <p class="calc-big" data-bug="eta-midnight" id="dEta">00:00</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Заказ -->
+        <section class="l2-section" id="order">
+          <h2>Заказ</h2>
+          <div class="order-grid">
+            <div class="panel">
+              <h3 class="panel-title">Состав</h3>
+              <ul class="items" id="oItems"></ul>
+              <p class="muted" id="oEmpty">Пока пусто. Добавь пиццы из калькулятора или конструктора.</p>
+            </div>
+
+            <div class="receipt check">
+              <h3 class="panel-title">Чек</h3>
+              <dl class="lines">
+                <div><dt>Пиццы, <span id="oCount">0</span> шт.</dt><dd id="oSub">0 ₽</dd></div>
+                <div data-bug="combo-max" id="oGiftRow" hidden><dt>Подарок: самая дешёвая пицца</dt><dd id="oGift">0 ₽</dd></div>
+                <div data-bug="discount-base" id="oDiscRow" hidden><dt>Скидка 15%</dt><dd id="oDisc">0 ₽</dd></div>
+                <div data-bug="free-delivery-boundary"><dt>Доставка</dt><dd id="oFee">0 ₽</dd></div>
+              </dl>
+              <div class="bonus-box">
+                <label for="oBonus">Списать бонусы <small>на счёте 300</small></label>
+                <input class="field" id="oBonus" type="number" min="0" value="0" inputmode="numeric">
+              </div>
+              <dl class="lines">
+                <div><dt>Оплачено бонусами</dt><dd id="oSpend">0 ₽</dd></div>
+                <div class="lines-total"><dt>К оплате</dt><dd id="oPay">0 ₽</dd></div>
+                <div data-bug="bonus-over"><dt>Останется бонусов</dt><dd id="oLeft">300</dd></div>
+                <div data-bug="cashback-base"><dt>Начислим бонусов</dt><dd id="oCash">0</dd></div>
+              </dl>
+              <div class="split">
+                <label for="oPeople">Скинуться поровну, человек</label>
+                <input class="field" id="oPeople" type="number" min="1" value="3" inputmode="numeric">
+                <dl class="lines">
+                  <div data-bug="split-zero"><dt>С каждого</dt><dd id="oPer">0 ₽</dd></div>
+                  <div data-bug="split-round"><dt>Вместе соберёте</dt><dd id="oTogether">0 ₽</dd></div>
+                </dl>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <div>
+        <p class="logo logo-light">корж</p>
+        <p>Пицца на праздник</p>
+      </div>
+      <div><h4>Адрес</h4><p>ул. Садовая, 12</p></div>
+      <div><h4>Телефон</h4><p>+7 900 000-12-34</p></div>
+      <div><h4>Часы работы</h4><p>Ежедневно 10:00–23:00</p></div>
+    </div>
+    <div class="wrap"><p class="copy">© <span id="year">2026</span> Пиццерия «Корж»</p></div>
+  </footer>
+
+  <div class="site-toast" id="siteToast" role="status" hidden></div>
+</div>
+
+<!-- ============ Игровой слой: режим охоты ============ -->
+<div class="uv" id="uv" aria-hidden="true"></div>
+<div class="lens" id="lens" aria-hidden="true"></div>
+<div class="pins" id="pins" aria-hidden="true"></div>
+
+<div class="pop" id="pop" role="status" aria-live="polite" hidden></div>
+
+<div class="dock" id="dock">
+  <button class="hunt-toggle" id="huntBtn" type="button" aria-pressed="false">
+    <span class="switch" aria-hidden="true"><span class="knob"></span></span>
+    <span class="hunt-label"><b>Режим охоты</b><small id="huntHint">Выключен, клавиша Ф</small></span>
+  </button>
+  <div class="progress">
+    <div class="slots" id="slots" aria-hidden="true"></div>
+    <p><span id="caughtN">0</span> из <span id="totalN">16</span> багов поймано <span class="timer" id="timer">00:00</span></p>
+  </div>
+  <p class="score"><small>Счёт</small><span id="score">0</span></p>
+  <div class="dock-actions">
+    <button class="dock-btn" id="hintBtn" type="button">Подсказка</button>
+    <button class="dock-btn" id="logBtn" type="button">Журнал</button>
+    <button class="dock-btn dock-btn-light" id="finishBtn" type="button">Финиш</button>
+    <a class="dock-btn" href="index.html">Уровень 1</a>
+  </div>
+</div>
+
+<dialog class="dlg" id="introDlg" aria-labelledby="introTitle">
+  <form method="dialog" class="dlg-body" id="introForm">
+    <p class="dlg-kicker">Охота на баги, уровень 2</p>
+    <h2 class="dlg-title" id="introTitle" tabindex="-1" autofocus>Праздничный заказ</h2>
+    <p>«Корж» запустил заказ пиццы на праздники: калькулятор гостей, конструктор, скидки и бонусы. Опечаток и убегающих кнопок здесь нет — <b>16 багов</b> спрятались в расчётах.</p>
+    <ol class="steps">
+      <li>Прочитай блок «Как мы считаем». Это правила сайта: по ним проверяем каждую цифру.</li>
+      <li>Меняй числа и пересчитывай сам, на бумаге или калькуляторе. Не сходится с правилами — это баг.</li>
+      <li>Включи режим охоты кнопкой внизу или клавишей Ф и нажми на неверное число.</li>
+    </ol>
+    <p class="note">Опытные тестировщики проверяют крайние случаи: ноль, сумму ровно на границе акции, заказ поздно вечером.</p>
+    <div class="legend">
+      <span class="chip sev-1">Косметический +10</span>
+      <span class="chip sev-2">Незначительный +20</span>
+      <span class="chip sev-3">Серьёзный +30</span>
+      <span class="chip sev-4">Критический +50</span>
+      <span class="chip chip-minus">Ложная тревога −5</span>
+      <span class="chip chip-minus">Подсказка −5</span>
+    </div>
+    <label class="dlg-label">Как тебя зовут? <small class="dlg-optional">Можно не писать</small>
+      <input class="dlg-input" id="nameInput" maxlength="30" placeholder="Имя или команда" autocomplete="off">
+    </label>
+    <button class="dlg-cta" type="submit">Начать охоту</button>
+    <div class="dlg-row dlg-row-between">
+      <a class="dlg-link" href="index.html">Вернуться на уровень 1</a>
+      <button class="dlg-link" type="button" data-open-stats>Статистика участников</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog class="dlg" id="logDlg" aria-labelledby="logTitle">
+  <div class="dlg-body">
+    <div class="dlg-head">
+      <h2 class="dlg-title dlg-title-sm" id="logTitle">Журнал багов</h2>
+      <button class="dlg-close" type="button" data-close aria-label="Закрыть">×</button>
+    </div>
+    <div id="logList"></div>
+  </div>
+</dialog>
+
+<dialog class="dlg" id="finishDlg" aria-labelledby="finishTitle">
+  <div class="dlg-body" id="finishBody"></div>
+</dialog>
+
+<script src="stats.js" defer></script>
+<script src="level2.js" defer></script>
+</body>
+</html>

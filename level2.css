@@ -1,0 +1,121 @@
+/* Уровень 2. Общие токены, шапка, панель охоты и диалоги — в style.css */
+
+.muted { color: var(--muted); }
+.lbl { display: block; font-weight: 500; font-size: 15px; margin-bottom: 8px; }
+
+/* ---------- Первый экран ---------- */
+.l2-hero {
+  display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; align-items: center;
+  padding: 64px 0 56px;
+}
+.l2-hero h1 {
+  font: 700 clamp(34px, 4.6vw, 58px)/1.05 var(--display);
+  letter-spacing: -.035em; max-width: 14ch;
+}
+.size-row { display: flex; align-items: end; justify-content: end; gap: 18px; }
+.size-item { display: grid; justify-items: center; gap: 10px; color: var(--muted); font-size: 14px; font-weight: 500; }
+.size-item .pizza::after {
+  content: ''; position: absolute; inset: 0; border-radius: 50%;
+  background: repeating-conic-gradient(from 0deg, rgba(150, 90, 40, .55) 0 .9deg, transparent .9deg calc(360deg / var(--n)));
+  mask: radial-gradient(circle, #000 0 66%, transparent 67%);
+  -webkit-mask: radial-gradient(circle, #000 0 66%, transparent 67%);
+}
+
+/* ---------- Раскладка: правила справа, разделы слева ---------- */
+.l2-layout {
+  display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 32px; align-items: start;
+}
+.rules-col { grid-column: 2; grid-row: 1; position: sticky; top: 88px; }
+.l2-main { grid-column: 1; grid-row: 1; display: grid; gap: 72px; min-width: 0; }
+.l2-section { scroll-margin-top: 84px; }
+.l2-section > h2 {
+  font: 700 clamp(26px, 3vw, 36px)/1.1 var(--display); letter-spacing: -.03em; margin-bottom: 22px;
+}
+
+/* ---------- Чек ---------- */
+.receipt {
+  position: relative; background: #fff; padding: 26px 24px 30px;
+  border-radius: 18px 18px 0 0;
+  filter: drop-shadow(0 1px 0 var(--line)) drop-shadow(0 10px 24px rgba(27, 33, 29, .1));
+  margin-bottom: 14px;
+}
+.receipt::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: -14px; height: 14px;
+  background:
+    linear-gradient(-45deg, transparent 10px, #fff 0) 0 0 / 20px 14px repeat-x,
+    linear-gradient(45deg, transparent 10px, #fff 0) 0 0 / 20px 14px repeat-x;
+}
+.rules { max-height: calc(100vh - 88px - var(--dock-h) - 44px); overflow: auto; }
+.rules h2 { font: 700 20px/1.2 var(--display); letter-spacing: -.02em; margin-bottom: 4px; }
+.rules section { padding: 14px 0; border-bottom: 1.5px dashed var(--line); }
+.rules section:last-child { border-bottom: 0; padding-bottom: 0; }
+.rules h3 { font-size: 14px; font-weight: 700; color: var(--tomato); margin-bottom: 4px; }
+.rules p { font-size: 14.5px; line-height: 1.5; }
+.rules p + p { margin-top: 6px; }
+
+/* ---------- Панели разделов ---------- */
+.calc, .builder, .delivery { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: start; }
+.form-col { display: grid; gap: 16px; }
+.form-col > label { display: block; font-weight: 500; font-size: 15px; }
+.form-col .field { margin-top: 6px; }
+.panel-title { font: 700 20px var(--display); letter-spacing: -.02em; margin-bottom: 14px; }
+
+.lines { margin: 0; }
+.lines > div { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 7px 0; }
+.lines dt { color: var(--ink); }
+.lines dd { margin: 0; font-weight: 600; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.lines > .lines-total { border-top: 1.5px dashed var(--line); margin-top: 6px; padding-top: 12px; font: 700 20px var(--display); letter-spacing: -.02em; }
+.lines > .lines-total dd { font-weight: 700; }
+
+.calc-need { margin-top: 18px; color: var(--muted); font-size: 15px; }
+.calc-big { font: 800 clamp(40px, 5vw, 56px)/1.05 var(--display); letter-spacing: -.04em; font-variant-numeric: tabular-nums; }
+.calc-out .muted { margin: 4px 0 18px; }
+
+/* конструктор */
+.builder-art { display: grid; place-items: center; padding: 10px; }
+.builder-art .pizza { width: min(300px, 100%); }
+.tops { display: flex; flex-wrap: wrap; gap: 8px; }
+.tops button {
+  display: inline-flex; align-items: center; gap: 6px;
+  border: 1px solid var(--line); background: #fff; border-radius: 999px;
+  padding: 7px 12px 7px 9px; font-size: 14px; font-weight: 500; cursor: pointer;
+}
+.tops button small { color: var(--muted); font-size: 13px; }
+.tops button[aria-pressed="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
+.tops button[aria-pressed="true"] small { color: #c9cfca; }
+.tops-msg { min-height: 20px; margin-top: 6px; font-size: 14px; color: var(--tomato); }
+
+/* ---------- Заказ ---------- */
+.order-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 28px; }
+.order-grid .check { width: min(560px, 100%); }
+.items { list-style: none; margin: 0; padding: 0; }
+.item {
+  display: grid; grid-template-columns: minmax(0, 1fr) 64px 84px 28px; gap: 10px; align-items: center;
+  padding: 12px 0; border-bottom: 1px solid var(--line);
+}
+.item b { font-weight: 600; display: block; }
+.item small { display: block; color: var(--muted); font-size: 13px; line-height: 1.35; }
+.item .field { padding: 8px 10px; text-align: center; }
+.item-sum { text-align: right; font-weight: 600; white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+.check { padding-bottom: 26px; }
+.bonus-box, .split { padding: 14px 0; border-top: 1.5px dashed var(--line); margin-top: 8px; }
+.bonus-box label, .split label { display: flex; justify-content: space-between; gap: 10px; font-weight: 500; font-size: 15px; margin-bottom: 6px; }
+.bonus-box small { color: var(--muted); font-weight: 400; }
+.split .lines { margin-top: 6px; }
+
+/* ---------- Адаптив ---------- */
+@media (max-width: 1020px) {
+  .l2-layout { grid-template-columns: minmax(0, 1fr); }
+  .rules-col, .l2-main { grid-column: 1; grid-row: auto; }
+  .rules-col { position: static; }
+  .rules { max-height: none; }
+}
+@media (max-width: 760px) {
+  .l2-hero { grid-template-columns: 1fr; padding: 36px 0 40px; gap: 24px; }
+  .size-row { justify-content: start; }
+  .calc, .builder, .delivery, .order-grid { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .l2-main { gap: 56px; }
+  .item { grid-template-columns: minmax(0, 1fr) 56px 28px; }
+  .item .item-sum { grid-column: 1; grid-row: 2; text-align: left; }
+}
